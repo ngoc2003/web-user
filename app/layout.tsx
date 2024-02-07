@@ -9,11 +9,6 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import ThemeProviderClient from "./providers/ThemeProvider";
-<<<<<<< HEAD
-=======
-import { Box } from "@mui/material";
-import Image from "next/image";
->>>>>>> 251d529 (feat: sign in UI)
 
 export const metadata: Metadata = {
   title: "Pet Connect",

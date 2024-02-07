@@ -1,23 +1,36 @@
 "use client";
 
-import { Box, Button, Divider, IconButton, Typography } from "@mui/material";
-import Image from "next/image";
+import PCTextField from "@/app/components/textfield";
+import React, { useState } from "react";
 import MailIcon from "@mui/icons-material/Mail";
 import LockIcon from "@mui/icons-material/Lock";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { useState } from "react";
+import { Box, Button, Divider, IconButton, Typography } from "@mui/material";
 import { theme } from "@/app/theme";
-import PCTextField from "@/app/components/textfield";
-import PCRadioButton from "@/app/components/radio-button";
+import Image from "next/image";
+import OathBox from "../_component/oath-box";
 import PCLink from "@/app/components/link";
-import OathBox from "./_component/oath-box";
+import PCSelect from "@/app/components/select";
 
-export default function AuthPage() {
+const SignUpPage = () => {
   const [isShowPassWord, setIsShowPassword] = useState(false);
+  const [isShowReTypePassWord, setIsShowReTypePassword] = useState(false);
 
   return (
     <>
+      <PCTextField fullWidth label="Name" placeholder="Full name" />
+      <Box display="flex" gap={2} mt={2}>
+        <PCSelect
+          fullWidth
+          label="Gender"
+          options={[
+            { label: "Male", value: "Male" },
+            { label: "Female", value: "Female" },
+          ]}
+        />
+        <PCTextField fullWidth type="date" label="Date of Birth" />
+      </Box>
       <PCTextField
         type="email"
         fullWidth
@@ -26,6 +39,7 @@ export default function AuthPage() {
         }}
         label="Email"
         placeholder="Email"
+        containerProps={{ sx: { mt: 2 } }}
       />
       <PCTextField
         containerProps={{
@@ -50,20 +64,35 @@ export default function AuthPage() {
         label="Password"
         placeholder="Password"
       />
-      <Box
-        mt={2}
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-      >
-        <PCRadioButton value="isRemember" label="Remember me" />
-        <Typography fontWeight={500} color={theme.palette.primary.main}>
-          Forgot password?
-        </Typography>
-      </Box>
+      <PCTextField
+        fullWidth
+        placeholder="Confirm password"
+        label="Confirm password"
+        type={isShowReTypePassWord ? "text" : "password"}
+        containerProps={{
+          sx: {
+            mt: 2,
+          },
+        }}
+        InputProps={{
+          startAdornment: <LockIcon sx={{ mr: 1 }} />,
+          endAdornment: (
+            <IconButton
+              onClick={() => setIsShowReTypePassword((prev) => !prev)}
+            >
+              {!isShowReTypePassWord ? (
+                <VisibilityOffIcon sx={{ fill: theme.palette.common.black }} />
+              ) : (
+                <VisibilityIcon sx={{ fill: theme.palette.common.black }} />
+              )}
+            </IconButton>
+          ),
+        }}
+      />
+
       <Button sx={{ mt: 4 }} fullWidth variant="contained">
         <Image src="/footprint.png" width={20} height={20} alt="Footprint" />
-        <Typography ml={1}>Sign in</Typography>
+        <Typography ml={1}>Sign up</Typography>
       </Button>
       <Divider
         sx={{
@@ -79,12 +108,14 @@ export default function AuthPage() {
 
       <Box mt={4} textAlign="center">
         <Typography color={theme.palette.tertiary.main}>
-          Dont have an account?
+          Already have an account?
         </Typography>
-        <PCLink href="/auth/sign-up">
-          <Typography fontWeight={500}>Sign up</Typography>
+        <PCLink href="/auth">
+          <Typography fontWeight={500}>Sign in</Typography>
         </PCLink>
       </Box>
     </>
   );
-}
+};
+
+export default SignUpPage;
