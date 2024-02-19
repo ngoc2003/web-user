@@ -37,7 +37,7 @@ const PCSelect = ({
     <FormControl fullWidth={fullWidth}>
       {!!label && (
         <Typography
-          variant="body1"
+          variant="body"
           fontWeight={500}
           mb={1}
           whiteSpace="nowrap"

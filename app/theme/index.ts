@@ -13,6 +13,7 @@ const colors = {
     100: "#FCFCFC",
     200: "rgba(0,0,0,0.5)",
     500: "#F1F3F5",
+    600: "#999999",
   },
   tertiary: {
     main: "rgba(3,11,91,0.5)",
@@ -218,10 +219,6 @@ declare module "@mui/material" {
     700: string;
     800: string;
     900: string;
-    A100: string;
-    A200: string;
-    A400: string;
-    A700: string;
   }
 }
 

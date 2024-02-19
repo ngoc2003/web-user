@@ -28,7 +28,7 @@ const PCTextField = ({
   return (
     <FormControl fullWidth={fullWidth} {...containerProps}>
       {!!label && (
-        <Typography variant="body1" fontWeight={500} mb={1}>
+        <Typography variant="body" fontWeight={500} mb={1}>
           {label}
         </Typography>
       )}

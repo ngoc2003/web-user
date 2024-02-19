@@ -1,4 +1,5 @@
 "use client";
+
 import { theme } from "@/app/theme";
 import { Box } from "@mui/material";
 import Image from "next/image";
@@ -12,6 +13,8 @@ export default function AuthLayout({
     <Box
       position="relative"
       width="100vw"
+      height="auto"
+      minHeight="100vh"
       py={14}
       display="grid"
       sx={{
