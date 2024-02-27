@@ -22,7 +22,7 @@ const ValidateChecked = ({ checked, label }: ValidateCheckedProps) => {
         color={checked ? "success" : "disabled"}
       />
       <Typography
-        color={checked ? theme.palette.success.main : theme.palette.grey[600]}
+        color={checked ? theme.palette.success.main : theme.palette.grey[200]}
         variant="footnote"
         letterSpacing={0.048}
       >

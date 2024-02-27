@@ -3,7 +3,7 @@ import axios, { AxiosError } from "axios";
 const PCConnectionInstance = axios.create({
   timeout: 20000,
   withCredentials: true,
-  baseURL: "http://127.0.0.1:8000/api",
+  baseURL: process.env.API_URL,
 });
 
 PCConnectionInstance.interceptors.response.use(

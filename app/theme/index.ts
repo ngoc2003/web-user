@@ -6,14 +6,17 @@ import {
 
 const colors = {
   primary: {
+    dark: "#89271A",
     main: "#F79345",
     light: "#FDBDA2",
   },
+  secondary: { main: "#61CAC2", light: "#AAE8E3" },
   grey: {
     100: "#FCFCFC",
-    200: "rgba(0,0,0,0.5)",
-    500: "#F1F3F5",
-    600: "#999999",
+    200: "#F1F3F5", // neutral
+    500: "#999999",
+    600: "#888484", // dark neutral
+    800: "rgba(0,0,0,0.5)",
   },
   tertiary: {
     main: "rgba(3,11,91,0.5)",
@@ -29,7 +32,7 @@ const colors = {
 export const theme = createTheme({
   palette: {
     primary: colors.primary,
-    // secondary: colors.secondary,
+    secondary: colors.secondary,
     tertiary: colors.tertiary,
     grey: colors.grey,
     success: { main: "#34C759" },
@@ -95,10 +98,43 @@ export const theme = createTheme({
             backgroundColor: colors.primary.light,
           },
         },
+        containedPrimary: {
+          color: "#FFFFFF",
+          backgroundColor: colors.primary.main,
+
+          "&.Mui-disabled": {
+            backgroundColor: colors.primary.light,
+          },
+          "&:hover": {
+            opacity: 0.8,
+          },
+        },
+        outlinedPrimary: {
+          color: colors.primary.main,
+          backgroundColor: "transparent",
+          border: `1px solid ${colors.primary.main}`,
+        },
+        outlinedSecondary: {
+          color: colors.secondary.main,
+          backgroundColor: "transparent",
+          border: `1px solid ${colors.secondary.main}`,
+        },
+        containedSecondary: {
+          color: "#FFFFFF",
+          backgroundColor: colors.secondary.main,
+
+          "&.Mui-disabled": {
+            backgroundColor: colors.secondary.light,
+          },
+        },
         text: {
           color: "#000000",
-          backgroundColor: colors.grey[100],
-          boxShadow: "0px 4px 4px 0px rgba(0,0,0,0.1)",
+          backgroundColor: "transparent",
+          boxShadow: "unset",
+
+          "&:hover": {
+            backgroundColor: colors.grey[200],
+          },
         },
       },
     },

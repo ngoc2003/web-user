@@ -53,7 +53,7 @@ const PCSelect = ({
           minWidth: 150,
           borderRadius: "8px",
           padding: 1.5,
-          bgcolor: theme.palette.grey[500],
+          bgcolor: theme.palette.grey[200],
           ...props.sx,
         }}
         {...omit(props, ["sx"])}
