@@ -20,7 +20,6 @@ import PlaceIcon from "@mui/icons-material/Place";
 import { useRegister } from "@/app/services/auth";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { AxiosError } from "axios";
 
 const SignUpPage = () => {
   const schema = useSignUpSchema();
@@ -51,6 +50,7 @@ const SignUpPage = () => {
         toast.success("Otp was sent. Please check your email.");
       },
       onError: (response: any) => {
+        console.log(response);
         if (response.response?.data?.errors)
           toast.error(
             Object.values(response.response?.data?.errors).toString()

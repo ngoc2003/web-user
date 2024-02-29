@@ -3,7 +3,7 @@ import axios, { AxiosError } from "axios";
 const PCConnectionInstance = axios.create({
   timeout: 20000,
   withCredentials: true,
-  baseURL: process.env.API_URL,
+  baseURL: "https://db.pet-connect.website/api",
 });
 
 PCConnectionInstance.interceptors.response.use(

@@ -4,7 +4,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { PCConnectionInstance } from "./app/api";
 import { getMe, getUserById } from "./app/api/user";
-import { NextResponse } from "next/server";
 import { AxiosError } from "axios";
 
 export const authOptions: AuthOptions = {
@@ -25,7 +24,11 @@ export const authOptions: AuthOptions = {
           if (!credentials?.email || !credentials?.password) {
             throw new Error("Invalid credentials");
           }
-          const { data: account } = await logIn(credentials);
+          const data = await logIn(credentials);
+
+          console.log(data.data);
+
+          const account = data.data;
 
           if (!account) {
             throw new Error("Invalid credentials");
@@ -113,8 +116,6 @@ export const authOptions: AuthOptions = {
         session.user.name = token.name;
         session.user.email = token.email;
       }
-
-      //   console.log("Session ~~ ", session);
 
       return session;
     },
