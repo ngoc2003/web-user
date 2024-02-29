@@ -100,7 +100,6 @@ const LeftSideBar = (props: LeftSideBarProps) => {
           </MenuItem>
         ))}
       </MenuList>
-
       <Box p={3} textAlign="center">
         <Typography variant="footnote" color={theme.palette.grey[500]}>
           Copyright © 2024 Pet Connect. All Rights Reserved.

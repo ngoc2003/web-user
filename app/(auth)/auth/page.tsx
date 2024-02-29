@@ -57,7 +57,6 @@ export default function AuthPage() {
     })
       .then((callback) => {
         setIsLoading(false);
-        console.log(callback);
         if (!callback?.error) {
           router.push("/home");
           return toast.success("Login successfully. Welcome back.");

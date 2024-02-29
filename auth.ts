@@ -1,19 +1,12 @@
 import { logIn, logOut } from "@/app/api/auth";
 import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
 import { PCConnectionInstance } from "./app/api";
 import { getMe, getUserById } from "./app/api/user";
-import { NextResponse } from "next/server";
 import { AxiosError } from "axios";
 
 export const authOptions: AuthOptions = {
   providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-      allowDangerousEmailAccountLinking: true,
-    }),
     CredentialsProvider({
       name: "credentials",
       credentials: {
@@ -25,7 +18,11 @@ export const authOptions: AuthOptions = {
           if (!credentials?.email || !credentials?.password) {
             throw new Error("Invalid credentials");
           }
-          const { data: account } = await logIn(credentials);
+          const data = await logIn(credentials);
+
+          const account = data.data;
+
+          console.log("ACCOUNT NE ~~ ", account);
 
           if (!account) {
             throw new Error("Invalid credentials");
@@ -47,6 +44,8 @@ export const authOptions: AuthOptions = {
             data: { user },
           } = await getMe();
 
+          console.log(user);
+
           return {
             id: user.id, // Use userId instead of account Id
             name: user?.name,
@@ -58,6 +57,7 @@ export const authOptions: AuthOptions = {
             accessToken: account.token,
           };
         } catch (err: any) {
+          // console.log(err);
           throw new Error(err.response.data.message);
         }
       },
@@ -113,8 +113,6 @@ export const authOptions: AuthOptions = {
         session.user.name = token.name;
         session.user.email = token.email;
       }
-
-      //   console.log("Session ~~ ", session);
 
       return session;
     },
