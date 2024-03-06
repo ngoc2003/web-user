@@ -9,12 +9,20 @@ import { theme } from "@/app/theme";
 import { useToggleMobileSidebarLeft } from "@/app/hooks/useToggleMobileSidebarLeft";
 import { useMediaQuery } from "@mui/material";
 import Layer from "@/app/components/layer";
+import CreatePostModal from "@/app/components/modal/CreatePostModal";
+import { useCreatePostModal } from "@/app/hooks/useCreatePostModal";
+import UpdatePostModal from "@/app/components/modal/UpdatePostModal";
+import { useUpdatePostModal } from "@/app/hooks/useUpdatePostModal";
 
 const HomePage = () => {
-  const toggleSidebarLeft = useToggleMobileSidebarLeft();
   const isTablet = useMediaQuery(theme.breakpoints.down("lg"));
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const isMiniMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const createPost = useCreatePostModal();
+  const updatePost = useUpdatePostModal();
+
+  const toggleSidebarLeft = useToggleMobileSidebarLeft();
 
   return (
     <Box display="flex" height="100%" maxWidth={1920} mx="auto">
@@ -42,6 +50,14 @@ const HomePage = () => {
       />
       <MainContent sx={{ flex: 1 }} />
       {!isMobile && <RightSidebar width={320} />}
+      <CreatePostModal
+        onClose={() => createPost.onClose()}
+        open={createPost.isOpen}
+      />
+      <UpdatePostModal
+        onClose={() => updatePost.onClose()}
+        open={updatePost.isOpen}
+      />
     </Box>
   );
 };

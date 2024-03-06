@@ -18,6 +18,7 @@ import ClassIcon from "@mui/icons-material/Class";
 import Image from "next/image";
 import PetsOutlinedIcon from "@mui/icons-material/PetsOutlined";
 import Invitation from "../invitation";
+import NameWithAvatar from "@/app/components/name-with-avatar";
 
 const LIST_LINK = [
   {
@@ -68,20 +69,11 @@ const LeftSideBar = (props: LeftSideBarProps) => {
           <Invitation />
         </Box>
       )}
-      {!isMiniMobile && (
-        <Box display="flex" alignItems="center" px={2} pb={2}>
-          <Avatar sx={{ bgcolor: theme.palette.primary.light }}>
-            {user.name.charAt(0)}
-          </Avatar>
-          <Typography ml={1.5} fontWeight={600}>
-            {user.name}
-          </Typography>
-        </Box>
-      )}
+      {!isMiniMobile && <NameWithAvatar name={user.name} />}
       <MenuList sx={{ flex: 1 }}>
         {LIST_LINK.map((link) => (
           <MenuItem
-            key={link.link}
+            key={link.label}
             sx={{
               px: 3,
               py: 2,

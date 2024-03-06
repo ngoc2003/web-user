@@ -1,4 +1,4 @@
-import create from "zustand";
+import { create } from "zustand";
 import { ExtendedUserType } from "../types/user";
 
 interface UserStore {

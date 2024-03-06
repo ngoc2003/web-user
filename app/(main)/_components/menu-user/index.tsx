@@ -28,9 +28,11 @@ const MenuUser = ({ user }: MenuUserProps) => {
   const router = useRouter();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = !!anchorEl;
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -39,6 +41,7 @@ const MenuUser = ({ user }: MenuUserProps) => {
     signOut();
     router.push("/auth");
   };
+
   return (
     <Box>
       <IconButton onClick={handleClick}>

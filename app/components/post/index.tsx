@@ -6,10 +6,13 @@ import {
   Divider,
   Icon,
   IconButton,
+  ListItemIcon,
+  Menu,
+  MenuItem,
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import React from "react";
+import React, { memo } from "react";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import PetsOutlinedIcon from "@mui/icons-material/PetsOutlined";
 import TextsmsRoundedIcon from "@mui/icons-material/TextsmsRounded";
@@ -18,6 +21,13 @@ import TuneRoundedIcon from "@mui/icons-material/TuneRounded";
 import PCTextField from "../textfield";
 import { useUser } from "@/app/hooks/useUser";
 import Comment from "../comment";
+import { PostType, PostWithUserType } from "@/app/api/post";
+import { formatDistance } from "date-fns";
+import EditIcon from "@mui/icons-material/Edit";
+import { useUpdatePostModal } from "@/app/hooks/useUpdatePostModal";
+import { useDeletePost } from "@/app/services/post";
+import DeleteIcon from "@mui/icons-material/Delete";
+import toast from "react-hot-toast";
 
 const POST_ACTIONS = [
   {
@@ -34,10 +44,32 @@ const POST_ACTIONS = [
   },
 ];
 
-const Post = () => {
+const Post = (props: PostWithUserType) => {
   const { user } = useUser();
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = !!anchorEl;
+  const updatePost = useUpdatePostModal();
+  const { mutate: deletePost } = useDeletePost();
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleDeletePost = () => {
+    deletePost(props.id, {
+      onSuccess: () => {
+        toast.success("Delete successfully.");
+        window.location.reload();
+      },
+    });
+  };
 
   if (!user) return;
+
+  const isAuthor = +user.id === +props.user.id;
 
   return (
     <Box
@@ -48,17 +80,63 @@ const Post = () => {
       bgcolor={theme.palette.common.white}
     >
       <Box display="flex" alignItems="center">
-        <Avatar sx={{ bgcolor: theme.palette.primary.light }}>N</Avatar>
+        <Avatar sx={{ bgcolor: theme.palette.primary.light }}>
+          {props.user.name.charAt(0)}
+        </Avatar>
         <Box ml={2} flex={1}>
-          <Typography fontWeight={600}>Harry James</Typography>
-          <Typography color={theme.palette.grey[600]}>1h ago</Typography>
+          <Typography fontWeight={600}>{props.user.name}</Typography>
+          <Typography color={theme.palette.grey[600]}>
+            {formatDistance(new Date(props.created_at), new Date(), {
+              addSuffix: true,
+            })}
+          </Typography>
         </Box>
-        <IconButton>
-          <MoreHorizRoundedIcon />
-        </IconButton>
+        <Box>
+          <IconButton onClick={handleClick}>
+            <MoreHorizRoundedIcon />
+          </IconButton>
+          <Menu
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+          >
+            {isAuthor && (
+              <Box>
+                <MenuItem
+                  onClick={() => {
+                    updatePost.onOpen({ data: props });
+                  }}
+                >
+                  <ListItemIcon>
+                    <EditIcon />
+                  </ListItemIcon>
+                  <Typography>Update</Typography>
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    handleDeletePost();
+                  }}
+                >
+                  <ListItemIcon>
+                    <DeleteIcon />
+                  </ListItemIcon>
+                  <Typography>Delete</Typography>
+                </MenuItem>
+              </Box>
+            )}
+          </Menu>
+        </Box>
       </Box>
-      <Typography mt={1}>I have something useful want to share </Typography>
-      <Box position="relative" height={400} mt={1.5}>
+      <Typography mt={1}>{props.content}</Typography>
+      {/* <Box position="relative" height={400} mt={1.5}>
         <Image
           src="/demoPost.png"
           fill
@@ -67,9 +145,9 @@ const Post = () => {
             objectFit: "cover",
           }}
         />
-      </Box>
+      </Box> */}
 
-      <Box
+      {/* <Box
         mt={2}
         display="flex"
         justifyContent="space-between"
@@ -88,7 +166,7 @@ const Post = () => {
         </Box>
 
         <Typography variant="footnote">4,2k comments</Typography>
-      </Box>
+      </Box> */}
 
       <Divider sx={{ my: 1.5 }} />
 
@@ -119,7 +197,7 @@ const Post = () => {
 
       <Divider sx={{ my: 1.5 }} />
 
-      <Box>
+      {/* <Box>
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <Typography variant="footnote" color={theme.palette.grey[600]}>
             See all comments
@@ -171,7 +249,7 @@ const Post = () => {
             See 28 more
           </Typography>
         </Box>
-      </Box>
+      </Box> */}
 
       <Box display="flex" alignItems="center" mt={2}>
         <Avatar sx={{ bgcolor: theme.palette.primary.light, mr: 3 }}>
@@ -186,4 +264,4 @@ const Post = () => {
   );
 };
 
-export default Post;
+export default memo(Post);

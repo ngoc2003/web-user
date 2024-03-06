@@ -1,5 +1,5 @@
 import { PCConnectionInstance } from ".";
-import { SEX_TYPE } from "../types/user";
+import { SEX_TYPE, UserType } from "../types/user";
 
 interface LoginBody {
   email: string;
@@ -14,6 +14,11 @@ export interface SignUpBody {
   email: string;
   password: string;
   confirmPassword: string;
+}
+
+export interface LoginResponse {
+  user: UserType & { email: string; role: string };
+  token: string;
 }
 
 export interface VerifyUserEmailBody {
