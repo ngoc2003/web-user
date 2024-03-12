@@ -4,56 +4,53 @@ import {
   Avatar,
   Box,
   Divider,
-  Icon,
   IconButton,
   ListItemIcon,
   Menu,
   MenuItem,
   Typography,
 } from "@mui/material";
-import Image from "next/image";
-import React, { memo } from "react";
+import React, { memo, useCallback, useRef, useState } from "react";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
-import PetsOutlinedIcon from "@mui/icons-material/PetsOutlined";
-import TextsmsRoundedIcon from "@mui/icons-material/TextsmsRounded";
-import ShareRoundedIcon from "@mui/icons-material/ShareRounded";
 import TuneRoundedIcon from "@mui/icons-material/TuneRounded";
-import PCTextField from "../textfield";
 import { useUser } from "@/app/hooks/useUser";
 import Comment from "../comment";
-import { PostType, PostWithUserType } from "@/app/api/post";
+import { ExtendedPostType } from "@/app/api/post";
 import { formatDistance } from "date-fns";
 import EditIcon from "@mui/icons-material/Edit";
 import { useUpdatePostModal } from "@/app/hooks/useUpdatePostModal";
 import { useDeletePost } from "@/app/services/post";
 import DeleteIcon from "@mui/icons-material/Delete";
 import toast from "react-hot-toast";
+import { CommentType, ExtendedCommentType } from "@/app/api/comment";
+import CommentInput from "./comment-input";
+import Actions from "./actions";
 
-const POST_ACTIONS = [
-  {
-    label: "Like",
-    icon: PetsOutlinedIcon,
-  },
-  {
-    label: "Comment",
-    icon: TextsmsRoundedIcon,
-  },
-  {
-    label: "Share",
-    icon: ShareRoundedIcon,
-  },
-];
+const NUMBER_OF_COMMENTS_WILL_LOAD_MORE = 5;
 
-const Post = (props: PostWithUserType) => {
+const Post = (props: ExtendedPostType) => {
+  const inputCommentRef = useRef<HTMLInputElement | null>(null);
+
   const { user } = useUser();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = !!anchorEl;
   const updatePost = useUpdatePostModal();
   const { mutate: deletePost } = useDeletePost();
 
+  const numberOfComment = useRef<number>(4);
+
+  const [comments, setComments] = useState<ExtendedCommentType[]>(
+    props.comments?.slice(props.comments.length - numberOfComment.current)
+  );
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
+  const handleFocusInputComment = () => {
+    inputCommentRef.current?.focus();
+  };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -66,6 +63,40 @@ const Post = (props: PostWithUserType) => {
       },
     });
   };
+
+  const handleRefreshCommentList = useCallback(
+    (comment: CommentType) => {
+      numberOfComment.current = numberOfComment.current + 1;
+      setComments((prev) => [
+        ...prev,
+        {
+          ...comment,
+          user,
+        } as ExtendedCommentType,
+      ]);
+    },
+    [user?.id]
+  );
+
+  const handleLoadMoreComment = useCallback(() => {
+    if (numberOfComment.current >= props.comments.length) return;
+    const numberCommentCanIncrease =
+      props.comments.length - numberOfComment.current;
+
+    if (numberCommentCanIncrease <= 0) return;
+
+    setComments(
+      props.comments?.slice(
+        props.comments.length -
+          numberOfComment.current -
+          (NUMBER_OF_COMMENTS_WILL_LOAD_MORE < numberCommentCanIncrease
+            ? NUMBER_OF_COMMENTS_WILL_LOAD_MORE
+            : numberCommentCanIncrease)
+      )
+    );
+    numberOfComment.current =
+      numberOfComment.current + NUMBER_OF_COMMENTS_WILL_LOAD_MORE;
+  }, [props.comments.length]);
 
   if (!user) return;
 
@@ -170,96 +201,55 @@ const Post = (props: PostWithUserType) => {
 
       <Divider sx={{ my: 1.5 }} />
 
-      <Box display="flex">
-        {POST_ACTIONS.map((action) => (
-          <Box
-            key={action.label}
-            sx={{
-              flex: 1,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <IconButton>
-              <Icon component={action.icon} />
-            </IconButton>
-            <Typography
-              ml={1}
-              variant="footnote"
-              color={theme.palette.grey[500]}
-            >
-              {action.label}
-            </Typography>
-          </Box>
-        ))}
-      </Box>
+      <Actions
+        id={props.id}
+        userId={user.id}
+        likes={props.likes}
+        handleFocusInputComment={handleFocusInputComment}
+      />
 
       <Divider sx={{ my: 1.5 }} />
 
-      {/* <Box>
-        <Box display="flex" alignItems="center" justifyContent="space-between">
-          <Typography variant="footnote" color={theme.palette.grey[600]}>
-            See all comments
-          </Typography>
-          <IconButton>
-            <TuneRoundedIcon />
-          </IconButton>
+      <Box>
+        <Box display="flex" alignItems="center" justifyContent="end">
+          {props.comments.length - numberOfComment.current > 0 && (
+            <Box flex={1} onClick={handleLoadMoreComment}>
+              <Typography
+                variant="footnote"
+                color={theme.palette.grey[600]}
+                sx={{
+                  transition: "0.2s",
+                  cursor: "pointer",
+                  ":hover": {
+                    fontWeight: 600,
+                    color: theme.palette.common.black,
+                    textDecoration: "underline",
+                  },
+                }}
+              >
+                See more {NUMBER_OF_COMMENTS_WILL_LOAD_MORE} comments
+              </Typography>
+            </Box>
+          )}
+          <Box>
+            <IconButton>
+              <TuneRoundedIcon />
+            </IconButton>
+          </Box>
         </Box>
         <Box>
-          <Comment
-            id={user.id}
-            data={{
-              user: {
-                id: "2",
-                name: "Bùi Thúy Anh",
-                address: "Hà Đông",
-                birthday: "2005-12-02",
-                email: "buithuyngoc2k3@gmail.com",
-                sex: "female",
-              },
-              comment: `Wonderful! Thank you so muchhh ❤ Lorem ipsum dolor sit amet,
-                    consectetur adipiscing elit, sed do eiusmod tempor
-                    incididunt ut labore et dolore magna aliqua. Ut enim`,
-            }}
-          />
-          <Comment
-            id={user.id}
-            data={{
-              user: {
-                id: "2",
-                name: "Bùi Thúy Anh",
-                address: "Hà Đông",
-                birthday: "2005-12-02",
-                email: "buithuyngoc2k3@gmail.com",
-                sex: "female",
-              },
-              comment: `Wonderful! Thank you so muchhh ❤ Lorem ipsum dolor sit amet,
-                    consectetur adipiscing elit, sed do eiusmod tempor
-                    incididunt ut labore et dolore magna aliqua. Ut enim`,
-            }}
-          />
-          <Typography
-            sx={{ textDecoration: "underline" }}
-            textAlign="right"
-            color={theme.palette.grey[600]}
-            fontWeight={600}
-            mt={1}
-          >
-            See 28 more
-          </Typography>
+          {comments?.map((comment) => (
+            <Comment key={comment.id} id={user.id} data={comment} />
+          ))}
         </Box>
-      </Box> */}
-
-      <Box display="flex" alignItems="center" mt={2}>
-        <Avatar sx={{ bgcolor: theme.palette.primary.light, mr: 3 }}>
-          {user.name.charAt(0)}
-        </Avatar>
-        <PCTextField
-          fullWidth
-          placeholder={`Hey ${user.name.split(" ")[0]}, put your comment here.`}
-        />
       </Box>
+
+      <CommentInput
+        ref={inputCommentRef}
+        handleRefreshCommentList={handleRefreshCommentList}
+        name={user.name}
+        postId={props.id}
+      />
     </Box>
   );
 };

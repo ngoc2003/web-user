@@ -7,7 +7,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import PCVerificationInput from "../_component/verification-input";
 import Image from "next/image";
 import PCCountDown from "@/app/components/count-down";
-import { useVerifyUserEmail } from "@/app/services/auth";
+import {
+  useResendVerificationCode,
+  useVerifyUserEmail,
+} from "@/app/services/auth";
 import toast from "react-hot-toast";
 
 const OTP_LENGTH = 6;
@@ -18,9 +21,11 @@ export default function OtpPage() {
   const [otp, setOtp] = useState<string>("");
   const [canResendOtp, setCanResendOtp] = useState(false);
   const { mutate, isLoading } = useVerifyUserEmail();
+  const { mutate: resendVerificationCode } = useResendVerificationCode();
+
+  const email = searchParams.get("email");
 
   const onSubmit = () => {
-    const email = searchParams.get("email");
     if (!email || !otp) return;
 
     mutate(
@@ -37,6 +42,8 @@ export default function OtpPage() {
     );
   };
 
+  if (!email) return;
+
   return (
     <Box display="grid" sx={{ placeItems: "center" }} textAlign="center">
       <Typography variant="title3" fontWeight={600}>
@@ -44,14 +51,21 @@ export default function OtpPage() {
       </Typography>
       <Typography mt={2} mb={3} color={theme.palette.tertiary.main}>
         Please enter the 6-digit verification code that was sent to your email
-        at <b>{searchParams.get("email")}</b>
+        at <b>{email}</b>
       </Typography>
       <PCVerificationInput onChange={(val) => setOtp(val)} />
       <Typography mt={2} mb={0.5} color={theme.palette.tertiary.main}>
         Haven&apos;t received the code yet?
       </Typography>
       <Typography
-        onClick={() => (canResendOtp ? console.log("HIHI") : undefined)}
+        onClick={() =>
+          canResendOtp
+            ? resendVerificationCode(
+                { email },
+                { onSuccess: () => setCanResendOtp(false) }
+              )
+            : undefined
+        }
         fontWeight={600}
         sx={{ textDecoration: "underline" }}
         color={

@@ -1,6 +1,8 @@
 import { AxiosResponse } from "axios";
 import { PCConnectionInstance } from ".";
 import { ExtendedUserType } from "../types/user";
+import { ExtendedCommentType } from "./comment";
+import { LikePostType } from "./likePost";
 
 export interface PostType {
   id: number;
@@ -12,8 +14,10 @@ export interface PostType {
   longitude?: number;
 }
 
-export interface PostWithUserType extends PostType {
+export interface ExtendedPostType extends PostType {
   user: ExtendedUserType;
+  comments: ExtendedCommentType[];
+  likes: LikePostType[];
 }
 
 export interface ListPostParams {
@@ -54,3 +58,13 @@ export const deletePost = async (id: number) => {
     `/post/${id}`
   );
 };
+
+export const likePost = async (id: number) =>
+  PCConnectionInstance.post<any, AxiosResponse<{ message: string }>>(
+    `/post/like/${id}`
+  );
+
+export const unlikePost = async (id: number) =>
+  PCConnectionInstance.post<any, AxiosResponse<{ message: string }>>(
+    `/post/unlike/${id}`
+  );

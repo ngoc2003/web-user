@@ -1,10 +1,10 @@
 import { create } from "zustand";
-import { PostWithUserType } from "../api/post";
+import { ExtendedPostType } from "../api/post";
 
 type UpdatePostType = {
   isOpen: boolean;
-  data: PostWithUserType | null;
-  onOpen: ({ data }: { data: PostWithUserType }) => void;
+  data: ExtendedPostType | null;
+  onOpen: ({ data }: { data: ExtendedPostType }) => void;
   onClose: () => void;
 };
 

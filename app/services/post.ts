@@ -4,6 +4,8 @@ import {
   addPost,
   deletePost,
   getListPost,
+  likePost,
+  unlikePost,
   updatePost,
 } from "../api/post";
 
@@ -28,4 +30,16 @@ export const useDeletePost = () =>
 export const useListPost = (params: ListPostParams) =>
   useQuery(["posts"], () => getListPost(params), {
     select: ({ data }) => data,
+  });
+
+export const useLikePost = () =>
+  useMutation({
+    mutationKey: ["post/like"],
+    mutationFn: likePost,
+  });
+
+export const useUnlikePost = () =>
+  useMutation({
+    mutationKey: ["post/unlike"],
+    mutationFn: unlikePost,
   });

@@ -1,15 +1,15 @@
-import { Box, BoxProps } from "@mui/material";
+import { Box, BoxProps, CircularProgress } from "@mui/material";
 import React from "react";
 import CreatePostBox from "../create-post-box";
 import Post from "@/app/components/post";
 import { useListPost } from "@/app/services/post";
-import { PostWithUserType } from "@/app/api/post";
-import UpdatePostModal from "@/app/components/modal/UpdatePostModal";
+import { ExtendedPostType } from "@/app/api/post";
+import Loading from "@/app/components/loading";
 
 interface MainContentProps extends BoxProps {}
 
 const MainContent = (props: MainContentProps) => {
-  const { data } = useListPost({
+  const { data, isFetching } = useListPost({
     limit: 20,
     offset: 0,
   });
@@ -17,8 +17,18 @@ const MainContent = (props: MainContentProps) => {
   return (
     <Box sx={{ px: 3, overflowY: "scroll", pb: 3, ...props?.sx }}>
       <CreatePostBox />
-      {data?.length &&
-        data.map((post: PostWithUserType) => <Post key={post.id} {...post} />)}
+
+      {isFetching && <Loading />}
+
+      {!isFetching && !data.length && (
+        <Box display="grid" sx={{ placeItems: "center" }} minHeight={320}>
+          No posts founded!
+        </Box>
+      )}
+
+      {!isFetching &&
+        !!data.length &&
+        data.map((post: ExtendedPostType) => <Post key={post.id} {...post} />)}
     </Box>
   );
 };
