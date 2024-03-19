@@ -9,10 +9,12 @@ import Loading from "@/app/components/loading";
 interface MainContentProps extends BoxProps {}
 
 const MainContent = (props: MainContentProps) => {
-  const { data, isFetching } = useListPost({
+  const { data, isFetching, isError } = useListPost({
     limit: 20,
     offset: 0,
   });
+
+  if (isError) return <>Error</>;
 
   return (
     <Box sx={{ px: 3, overflowY: "scroll", pb: 3, ...props?.sx }}>

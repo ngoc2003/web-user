@@ -72,6 +72,7 @@ const Post = (props: ExtendedPostType) => {
         {
           ...comment,
           user,
+          likes: [],
         } as ExtendedCommentType,
       ]);
     },
@@ -239,7 +240,12 @@ const Post = (props: ExtendedPostType) => {
         </Box>
         <Box>
           {comments?.map((comment) => (
-            <Comment key={comment.id} id={user.id} data={comment} />
+            <Comment
+              key={comment.id}
+              id={comment.id}
+              data={comment}
+              isLike={comment.likes.some((like) => +like.user_id === +user.id)}
+            />
           ))}
         </Box>
       </Box>

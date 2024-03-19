@@ -1,6 +1,7 @@
 import { AxiosResponse } from "axios";
 import { PCConnectionInstance } from ".";
 import { UserType } from "../types/user";
+import { LikeCommentType } from "./likeComment";
 
 export interface CommentType {
   id: number;
@@ -13,6 +14,7 @@ export interface CommentType {
 
 export interface ExtendedCommentType extends CommentType {
   user: UserType;
+  likes: LikeCommentType[];
 }
 
 export interface AddCommentBody {
