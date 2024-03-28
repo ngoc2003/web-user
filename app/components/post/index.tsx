@@ -99,9 +99,9 @@ const Post = (props: ExtendedPostType) => {
       numberOfComment.current + NUMBER_OF_COMMENTS_WILL_LOAD_MORE;
   }, [props.comments.length]);
 
-  if (!user) return;
+  if (!user || !props.user) return;
 
-  const isAuthor = +user.id === +props.user.id;
+  const isAuthor = +user.id === +props.user?.id;
 
   return (
     <Box
