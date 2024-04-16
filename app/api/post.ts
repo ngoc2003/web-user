@@ -1,24 +1,7 @@
 import { AxiosResponse } from "axios";
 import { PCConnectionInstance } from ".";
-import { ExtendedUserType } from "../types/user";
-import { ExtendedCommentType } from "./comment";
-import { LikePostType } from "./likePost";
+import { PostType } from "../types/user";
 
-export interface PostType {
-  id: number;
-  user_id: number;
-  content: string;
-  created_at: Date;
-  updated_at: Date;
-  latitude?: number;
-  longitude?: number;
-}
-
-export interface ExtendedPostType extends PostType {
-  user: ExtendedUserType;
-  comments: ExtendedCommentType[];
-  likes: LikePostType[];
-}
 
 export interface ListPostParams {
   order_by?: "asc" | "desc";

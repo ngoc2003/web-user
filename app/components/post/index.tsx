@@ -15,22 +15,22 @@ import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import TuneRoundedIcon from "@mui/icons-material/TuneRounded";
 import { useUser } from "@/app/hooks/useUser";
 import Comment from "../comment";
-import { ExtendedPostType } from "@/app/api/post";
 import { formatDistance } from "date-fns";
 import EditIcon from "@mui/icons-material/Edit";
 import { useUpdatePostModal } from "@/app/hooks/useUpdatePostModal";
 import { useDeletePost } from "@/app/services/post";
 import DeleteIcon from "@mui/icons-material/Delete";
 import toast from "react-hot-toast";
-import { CommentType, ExtendedCommentType } from "@/app/api/comment";
 import CommentInput from "./comment-input";
 import Actions from "./actions";
+import { useRouter } from "next/navigation";
+import { CommentType, ExtendedCommentType, ExtendedPostType } from "@/app/types/user";
 
 const NUMBER_OF_COMMENTS_WILL_LOAD_MORE = 5;
 
 const Post = (props: ExtendedPostType) => {
   const inputCommentRef = useRef<HTMLInputElement | null>(null);
-
+  const router = useRouter();
   const { user } = useUser();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = !!anchorEl;
@@ -115,7 +115,12 @@ const Post = (props: ExtendedPostType) => {
         <Avatar sx={{ bgcolor: theme.palette.primary.light }}>
           {props.user.name.charAt(0)}
         </Avatar>
-        <Box ml={2} flex={1}>
+        <Box
+          sx={{ cursor: "pointer" }}
+          ml={2}
+          flex={1}
+          onClick={() => router.push("/user/" + user.id)}
+        >
           <Typography fontWeight={600}>{props.user.name}</Typography>
           <Typography color={theme.palette.grey[600]}>
             {formatDistance(new Date(props.created_at), new Date(), {

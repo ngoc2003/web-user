@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { omit } from "lodash";
 import React, { useMemo } from "react";
-import Invitation from "../invitation";
+import Invitation from "../../../_components/invitation";
 import SuggestedUser from "@/app/components/suggested-user";
 
 const MOCK_CHIPS = [

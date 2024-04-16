@@ -1,7 +1,7 @@
 "use client";
 
 import { theme } from "@/app/theme";
-import { ExtendedUserType } from "@/app/types/user";
+import { CustomUserType } from "@/app/types/user";
 import {
   Avatar,
   Box,
@@ -13,7 +13,7 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { memo } from "react";
 import SettingsIcon from "@mui/icons-material/Settings";
 import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -21,7 +21,7 @@ import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 
 interface MenuUserProps {
-  user: ExtendedUserType;
+  user: CustomUserType;
 }
 
 const MenuUser = ({ user }: MenuUserProps) => {
@@ -38,8 +38,8 @@ const MenuUser = ({ user }: MenuUserProps) => {
   };
 
   const handleLogout = () => {
-    signOut();
     router.push("/auth");
+    signOut();
   };
 
   return (
@@ -73,7 +73,12 @@ const MenuUser = ({ user }: MenuUserProps) => {
           </ListItemIcon>
           <Typography>Setting</Typography>
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem
+          onClick={() => {
+            router.push("/user/" + user.id);
+            handleClose();
+          }}
+        >
           <ListItemIcon>
             <PersonIcon />
           </ListItemIcon>
@@ -96,4 +101,4 @@ const MenuUser = ({ user }: MenuUserProps) => {
   );
 };
 
-export default MenuUser;
+export default memo(MenuUser);

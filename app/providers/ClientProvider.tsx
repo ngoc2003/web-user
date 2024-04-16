@@ -2,15 +2,15 @@
 
 import React, { useEffect } from "react";
 import { useUser } from "../hooks/useUser";
-import { ExtendedUserType } from "../types/user";
+import { CustomUserType } from "../types/user";
 
 interface ClientProps {
-  data: { user: ExtendedUserType };
+  data: { user: CustomUserType };
   children: React.ReactNode;
 }
 
 const Client = ({ data, children }: ClientProps) => {
-  const { user, setInformation } = useUser();
+  const { setInformation } = useUser();
   useEffect(() => {
     if (data.user?.email) {
       setInformation(data.user);
