@@ -17,7 +17,7 @@ const UserProfilePage = () => {
     <>
       <UserProfileMainContent user={user} flex={1} />
 
-      <SideContent pets={user.pets} width={320} />
+      <SideContent followers={user.followers} followings={user.following} pets={user.pets} width={442} />
     </>
   );
 };

@@ -57,7 +57,7 @@ const RightSidebar = (props: RightSidebarProps) => {
 
       <Divider />
 
-      <Box my={3}>
+      {/* <Box my={3}>
         <Typography variant="title2">Suggested user</Typography>
 
         <Box mt={3}>
@@ -65,7 +65,7 @@ const RightSidebar = (props: RightSidebarProps) => {
             <SuggestedUser key={1 * index} />
           ))}
         </Box>
-      </Box>
+      </Box> */}
     </Box>
   );
 };

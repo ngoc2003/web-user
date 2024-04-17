@@ -2,7 +2,6 @@
 import { useUser } from "@/app/hooks/useUser";
 import { theme } from "@/app/theme";
 import {
-  Avatar,
   Box,
   BoxProps,
   Icon,
@@ -22,6 +21,7 @@ import Invitation from "../invitation";
 import NameWithAvatar from "@/app/components/name-with-avatar";
 import { omit } from "lodash";
 import { useToggleMobileSidebarLeft } from "@/app/hooks/useToggleMobileSidebarLeft";
+import { useRouter } from "next/navigation";
 
 const LIST_LINK = [
   {
@@ -55,6 +55,7 @@ interface LeftSideBarProps extends BoxProps {}
 
 const LeftSideBar = (props: LeftSideBarProps) => {
   const { user } = useUser();
+  const router = useRouter();
   const isMiniMobile = useMediaQuery(theme.breakpoints.down("md"));
   const isTiniMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const toggleSidebarLeft = useToggleMobileSidebarLeft();
@@ -99,10 +100,16 @@ const LeftSideBar = (props: LeftSideBarProps) => {
             <Invitation />
           </Box>
         )}
-        {!isMiniMobile && <NameWithAvatar name={user.name} />}
+        {!isMiniMobile && (
+          <NameWithAvatar
+            onClick={() => router.push("/user/" + user.id)}
+            name={user.name}
+          />
+        )}
         <MenuList sx={{ flex: 1 }}>
           {LIST_LINK.map((link) => (
             <MenuItem
+              onClick={() => router.push(link.link)}
               key={link.label}
               sx={{
                 px: 3,

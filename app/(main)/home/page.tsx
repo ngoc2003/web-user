@@ -18,7 +18,7 @@ const HomePage = () => {
   return (
     <>
       <MainContent sx={{ flex: 1 }} />
-      {!isMobile && <RightSidebar width={320} />}
+      {!isMobile && <RightSidebar width={400} />}
       <UpdatePostModal
         onClose={() => updatePost.onClose()}
         open={updatePost.isOpen}

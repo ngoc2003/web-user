@@ -1,41 +1,60 @@
 "use client";
 
+import PCNotFoundData from "@/app/components/notFoundData";
 import { theme } from "@/app/theme";
-import { ExtendedPetType } from "@/app/types/user";
+import { ExtendedPetType, FollowerType, FollowingType } from "@/app/types/user";
 import { Box, BoxProps, Button, Typography } from "@mui/material";
 import Image from "next/image";
 import React, { memo } from "react";
+import FolowList from "../follow-list";
 
 const RANDOM_QUOTES_FACT = [
-  "Dogs have owners, cats have staff.",
-  "A purr is a cat's way of smiling with its whole body.",
-  "Fish: the pets that clean their own rooms.",
-  "Life is short. Hug your dog.",
-  "Chickens: the pets that breakfast with you.",
-  "Every dog’s a therapist in a fur coat.",
-  "Cats operate on their own terms, not yours.",
-  "Fish: masters of zen in your living room.",
-  "Paws and reflect—life is better with pets.",
-  "Why do dogs always race to the door? They’re on the 'bark'et!",
-  "Cluck it up—chickens make everything better!",
-  "Cats are not our whole life, but they make our lives whole.",
-  "Dogs leave paw prints on your heart, and mud on your floor.",
-  "Fish tanks: underwater worlds in a glass.",
-  "In a perfect world, every chicken would have a home and every home would have a chicken.",
-  "Nine lives, one heart—cats truly captivate.",
-  "Every dog should have a home—not every home deserves a dog.",
-  "Swim against the current. Be more like a fish.",
-  "A dog's wagging tail and a cat's purring heart are the best medicines.",
-  "Ruffle some feathers; keep a chicken.",
+  "Cats need regular vet checkups to keep purring.",
+  "Cats love a good scratching post to save your furniture.",
+  "Cats appreciate a clean and odor-free litter box.",
+  "Cats enjoy toys that stimulate their hunting instincts.",
+  "Cats require some safe outdoor time, like a catio or on a harness.",
+  "Dogs are happier with daily walks to keep fit.",
+  "Dogs benefit from training with positive reinforcement techniques.",
+  "Dogs need early socialization with humans and other dogs.",
+  "Dogs like their minds stimulated with puzzle toys.",
+  "Dogs love having a comfy bed for restful sleep.",
+  "Birds thrive in a safe and engaging cage environment.",
+  "Birds benefit from a diet that mimics their natural foods.",
+  "Birds need their cages cleaned regularly to prevent diseases.",
+  "Birds enjoy out-of-cage time in a secure area daily.",
+  "Birds need daily interaction to bond with their human.",
+  "Fish require maintained water quality with regular testing and changes.",
+  "Fish thrive on a balanced diet appropriate for their species.",
+  "Fish need their tank kept away from direct sunlight to control algae growth.",
+  "Fish enjoy tanks decorated with plants for shelter and stress relief.",
+  "Fish health can be monitored by watching for signs of stress or illness.",
+  "Chickens need a predator-proof coop for safety.",
+  "Chickens lay more eggs when collected regularly.",
+  "Chickens enjoy a varied diet of grains and vegetables.",
+  "Chickens require enough space to roam and peck.",
+  "Chickens need regular checks for pests like mites or lice.",
+  "All pets need fresh water available at all times.",
+  "All pets should keep up with routine vaccinations and pest prevention.",
+  "All pets benefit from spaying or neutering to prevent unwanted litters.",
+  "All pets have specific needs and behaviors to learn about.",
+  "All pets deserve patience and love; they’re part of your family.",
 ];
 
 interface SideContentProps extends BoxProps {
   pets: ExtendedPetType[];
+  followers: FollowerType[];
+  followings: FollowingType[];
 }
 
-const SideContent = ({ pets, ...props }: SideContentProps) => {
+const SideContent = ({
+  followers,
+  followings,
+  pets,
+  ...props
+}: SideContentProps) => {
   return (
-    <Box px={2} {...props}>
+    <Box px={2} pb={5} overflow="scroll" {...props}>
       <Box position="relative">
         <Image
           width={0}
@@ -47,6 +66,7 @@ const SideContent = ({ pets, ...props }: SideContentProps) => {
             width: "100%",
             height: "auto",
           }}
+          objectFit="cover"
         />
         <Typography
           sx={{
@@ -88,7 +108,12 @@ const SideContent = ({ pets, ...props }: SideContentProps) => {
           )}
         </Typography>
 
-        <Button size="small" variant="text" color="primary">
+        <Button
+          size="small"
+          variant="text"
+          color="primary"
+          sx={{ color: theme.palette.primary.main }}
+        >
           Add new pet
         </Button>
       </Box>
@@ -100,13 +125,14 @@ const SideContent = ({ pets, ...props }: SideContentProps) => {
         display="flex"
         overflow="scroll"
       >
-        {!!pets?.length &&
+        {!!pets?.length ? (
           pets.map((pet) => (
             <Box key={pet.id} mr={2} width={110}>
               <Box borderRadius={3} overflow="hidden">
                 <Image
                   src={pet.image}
-                  width={110}
+                  width={120}
+                  objectFit="cover"
                   height={160}
                   alt="Pet profile"
                 />
@@ -123,14 +149,15 @@ const SideContent = ({ pets, ...props }: SideContentProps) => {
                 {pet.pet_type.name}
               </Typography>
             </Box>
-          ))}
+          ))
+        ) : (
+          <PCNotFoundData />
+        )}
       </Box>
 
       {/* Follow */}
 
-      <Box >
-
-      </Box>
+      <FolowList followers={followers} followings={followings} />
     </Box>
   );
 };

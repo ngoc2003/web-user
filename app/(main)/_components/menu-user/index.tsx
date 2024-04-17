@@ -38,8 +38,7 @@ const MenuUser = ({ user }: MenuUserProps) => {
   };
 
   const handleLogout = () => {
-    router.push("/auth");
-    signOut();
+    signOut({ callbackUrl: "/auth", redirect: true });
   };
 
   return (

@@ -26,8 +26,8 @@ export interface UserType extends CommonType {
 }
 
 export interface ExtendedUserType extends UserType {
-  follower: FollowType[];
-  following: FollowType[];
+  followers: FollowerType[];
+  following: FollowingType[];
   posts: ExtendedPostType[];
   pets: ExtendedPetType[];
 }
@@ -53,10 +53,10 @@ export interface FollowType extends CommonType {
   following_user_id: number;
 }
 export interface FollowerType extends FollowType {
-  users: UserType[];
+  user: UserType;
 }
 export interface FollowingType extends FollowType {
-  following: UserType[];
+  following: UserType;
 }
 
 // Comment
