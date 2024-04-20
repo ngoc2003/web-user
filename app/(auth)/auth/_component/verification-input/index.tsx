@@ -18,7 +18,7 @@ const PCVerificationInput = ({
       sx={{
         ".container": { gap: 2, width: "auto" },
         ".character": {
-          backgroundColor: theme.palette.grey[500],
+          backgroundColor: theme.palette.grey[200],
           borderRadius: 1.5,
           height: 44,
           width: 44,
@@ -31,7 +31,6 @@ const PCVerificationInput = ({
         ".character--selected": {
           borderBottomColor: theme.palette.primary.light,
           borderBottomWidth: 3,
-          
         },
       }}
     >
