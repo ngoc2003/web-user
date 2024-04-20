@@ -17,6 +17,7 @@
     "@mui/material": "^5.15.6",
     "axios": "^1.6.7",
     "date-fns": "^3.3.1",
+    "firebase": "^10.11.0",
     "lodash": "^4.17.21",
     "next": "14.1.0",
     "next-auth": "^4.24.5",

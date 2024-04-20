@@ -8,7 +8,7 @@ import PetsOutlinedIcon from "@mui/icons-material/PetsOutlined";
 import TextsmsRoundedIcon from "@mui/icons-material/TextsmsRounded";
 import ShareRoundedIcon from "@mui/icons-material/ShareRounded";
 import { theme } from "@/app/theme";
-import { LikePostType } from "@/app/api/likePost";
+import { LikePostType } from "@/app/types/user";
 
 interface ActionsProps {
   handleFocusInputComment: () => void;

@@ -44,6 +44,7 @@ export interface ExtendedPostType extends PostType {
   user: ExtendedUserType;
   comments: ExtendedCommentType[];
   likes: LikePostType[];
+  images: ImageType[];
 }
 
 // Follow
@@ -106,4 +107,9 @@ export interface PetType extends CommonType {
 
 export interface ExtendedPetType extends PetType {
   pet_type: PetTypeType;
+}
+
+export interface ImageType extends CommonType {
+  link: string;
+  post_id: number;
 }

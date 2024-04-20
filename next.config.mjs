@@ -5,7 +5,7 @@ const nextConfig = {
     missingSuspenseWithCSRBailout: false,
   },
   images: {
-    domains: ["basepaws.com"],
+    domains: ["basepaws.com", "firebasestorage.googleapis.com"],
   },
 };
 

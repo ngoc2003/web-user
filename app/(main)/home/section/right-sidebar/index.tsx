@@ -25,19 +25,11 @@ interface RightSidebarProps extends BoxProps {}
 
 const RightSidebar = (props: RightSidebarProps) => {
   const { user } = useUser();
-
-  const time = useMemo<string>(() => {
-    const date = new Date().getHours();
-    if (date < 12) return "morning";
-    if (date < 18) return "afternoon";
-    return "evening";
-  }, []);
-
   if (!user) return;
   return (
     <Box
       p={2}
-      sx={{ overflowY: "scroll", ...props?.sx }}
+      sx={{ overflowY: "scroll", bgcolor: "transparent", ...props?.sx }}
       maxHeight="100%"
       {...omit(props, ["sx"])}
     >

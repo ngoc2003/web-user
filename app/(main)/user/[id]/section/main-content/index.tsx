@@ -1,20 +1,29 @@
 "use client";
 import { useUser } from "@/app/hooks/useUser";
 import { theme } from "@/app/theme";
-import { Avatar, Box, BoxProps, Button, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  BoxProps,
+  Button,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import Image from "next/image";
 import React from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import CreatePostBox from "@/app/(main)/_components/create-post-box";
 import { ExtendedPostType, ExtendedUserType } from "@/app/types/user";
 import Post from "@/app/components/post";
+import SideContent from "../side-content";
 
 interface UserProfileMainContent extends BoxProps {
   user: ExtendedUserType;
 }
 
 const UserProfileMainContent = ({ user, ...props }: UserProfileMainContent) => {
-  console.log(user);
+  const isLaptop = useMediaQuery(theme.breakpoints.up("xl"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
   if (!user || !user.name) {
     return null;
   }
@@ -30,7 +39,7 @@ const UserProfileMainContent = ({ user, ...props }: UserProfileMainContent) => {
             alt="cover"
             src={"/demo_cover.png"}
             objectFit="cover"
-            style={{ width: "100%", height: 350 }}
+            style={{ width: "100%", height: isLaptop ? 350 : 250 }}
           />
         </Box>
         <Box
@@ -74,6 +83,15 @@ const UserProfileMainContent = ({ user, ...props }: UserProfileMainContent) => {
       </Box>
 
       <CreatePostBox />
+
+      {isMobile && (
+        <SideContent
+          showQuotes={false}
+          followers={user.followers}
+          followings={user.following}
+          pets={user.pets}
+        />
+      )}
 
       <Box>
         {!!user.posts?.length &&

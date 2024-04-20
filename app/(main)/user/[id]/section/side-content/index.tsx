@@ -45,48 +45,52 @@ interface SideContentProps extends BoxProps {
   pets: ExtendedPetType[];
   followers: FollowerType[];
   followings: FollowingType[];
+  showQuotes?: boolean;
 }
 
 const SideContent = ({
   followers,
   followings,
   pets,
+  showQuotes = true,
   ...props
 }: SideContentProps) => {
   return (
     <Box px={2} pb={5} overflow="scroll" {...props}>
-      <Box position="relative">
-        <Image
-          width={0}
-          height={0}
-          alt="Quotes"
-          src="/quote.png"
-          sizes="100vw"
-          style={{
-            width: "100%",
-            height: "auto",
-          }}
-          objectFit="cover"
-        />
-        <Typography
-          sx={{
-            position: "absolute",
-            top: "50%",
-            width: "100%",
-            p: 2,
-            color: theme.palette.common.white,
-            fontWeight: 600,
-            left: "50%",
-            transform: "translate(-50%,-50%)",
-          }}
-        >
-          {
-            RANDOM_QUOTES_FACT[
-              Math.floor(Math.random() * RANDOM_QUOTES_FACT.length)
-            ]
-          }
-        </Typography>
-      </Box>
+      {showQuotes && (
+        <Box position="relative">
+          <Image
+            width={0}
+            height={0}
+            alt="Quotes"
+            src="/quote.png"
+            sizes="100vw"
+            style={{
+              width: "100%",
+              height: "auto",
+            }}
+            objectFit="cover"
+          />
+          <Typography
+            sx={{
+              position: "absolute",
+              top: "50%",
+              width: "100%",
+              p: 2,
+              color: theme.palette.common.white,
+              fontWeight: 600,
+              left: "50%",
+              transform: "translate(-50%,-50%)",
+            }}
+          >
+            {
+              RANDOM_QUOTES_FACT[
+                Math.floor(Math.random() * RANDOM_QUOTES_FACT.length)
+              ]
+            }
+          </Typography>
+        </Box>
+      )}
 
       {/* Pet */}
       <Box

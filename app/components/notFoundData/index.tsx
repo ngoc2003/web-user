@@ -4,7 +4,7 @@ import React from "react";
 
 const PCNotFoundData = () => {
   return (
-    <Box textAlign="center" mt={5}>
+    <Box width="100%" textAlign="center" mt={5}>
       <Image
         src="/notFound.jpg"
         width={0}

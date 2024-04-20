@@ -24,7 +24,13 @@ import toast from "react-hot-toast";
 import CommentInput from "./comment-input";
 import Actions from "./actions";
 import { useRouter } from "next/navigation";
-import { CommentType, ExtendedCommentType, ExtendedPostType } from "@/app/types/user";
+import {
+  CommentType,
+  ExtendedCommentType,
+  ExtendedPostType,
+} from "@/app/types/user";
+import Image from "next/image";
+import PCImageSlider from "../image-slider";
 
 const NUMBER_OF_COMMENTS_WILL_LOAD_MORE = 5;
 
@@ -33,9 +39,12 @@ const Post = (props: ExtendedPostType) => {
   const router = useRouter();
   const { user } = useUser();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [openImageSlider, setOpenImageSlider] = useState(false);
   const open = !!anchorEl;
   const updatePost = useUpdatePostModal();
   const { mutate: deletePost } = useDeletePost();
+
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const numberOfComment = useRef<number>(4);
 
@@ -173,17 +182,39 @@ const Post = (props: ExtendedPostType) => {
         </Box>
       </Box>
       <Typography mt={1}>{props.content}</Typography>
-      {/* <Box position="relative" height={400} mt={1.5}>
-        <Image
-          src="/demoPost.png"
-          fill
-          alt="Post"
-          style={{
-            objectFit: "cover",
-          }}
-        />
-      </Box> */}
 
+      <Box sx={{ cursor: "pointer" }}>
+        {props.images?.length &&
+          props?.images.map((image, index) => (
+            <Box
+              key={image.id}
+              textAlign="center"
+              bgcolor={theme.palette.grey[200]}
+              mt={1}
+              onClick={() => {
+                setActiveIndex(index);
+                setOpenImageSlider(true);
+              }}
+            >
+              <Image
+                width={0}
+                height={0}
+                sizes="100vw"
+                src={image.link}
+                alt="Image"
+                style={{ width: "100%", height: "auto", maxWidth: 400 }}
+                objectFit="contain"
+              />
+            </Box>
+          ))}
+      </Box>
+
+      <PCImageSlider
+        open={openImageSlider}
+        activeIndex={activeIndex}
+        onClose={() => setOpenImageSlider(false)}
+        images={props.images}
+      />
       {/* <Box
         mt={2}
         display="flex"

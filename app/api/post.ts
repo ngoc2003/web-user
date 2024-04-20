@@ -2,7 +2,6 @@ import { AxiosResponse } from "axios";
 import { PCConnectionInstance } from ".";
 import { PostType } from "../types/user";
 
-
 export interface ListPostParams {
   order_by?: "asc" | "desc";
   user_id?: string;
@@ -12,6 +11,7 @@ export interface ListPostParams {
 
 export interface AddPostBody {
   content: string;
+  images: string[];
   latitude?: number;
   longitude?: number;
 }
