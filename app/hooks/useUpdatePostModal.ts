@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { ExtendedPostType } from "../api/post";
+import { ExtendedPostType } from "../types/user";
 
 type UpdatePostType = {
   isOpen: boolean;

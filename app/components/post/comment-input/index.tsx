@@ -5,7 +5,7 @@ import React, { memo, useState } from "react";
 import PCTextField from "../../textfield";
 import SendIcon from "@mui/icons-material/Send";
 import { useAddComment } from "@/app/services/comment";
-import { CommentType } from "@/app/api/comment";
+import { CommentType } from "@/app/types/user";
 
 interface CommentInputProps {
   name: string;

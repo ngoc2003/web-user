@@ -1,9 +1,9 @@
 import { create } from "zustand";
-import { ExtendedUserType } from "../types/user";
+import { CustomUserType } from "../types/user";
 
 interface UserStore {
-  user: ExtendedUserType | null;
-  setInformation: (newUserData: ExtendedUserType) => void;
+  user: CustomUserType | null;
+  setInformation: (newUserData: CustomUserType) => void;
 }
 export const useUser = create<UserStore>((set) => ({
   user: null,

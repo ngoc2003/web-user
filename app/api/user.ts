@@ -1,9 +1,5 @@
 import { PCConnectionInstance } from ".";
 
-export const getMe = async () => {
-  return PCConnectionInstance.get("/user/me");
-};
-
-export const getUserById = async (id: any) => {
+export const getUserById = async (id: number) => {
   return PCConnectionInstance.get(`/user/${id}`);
 };

@@ -4,6 +4,7 @@ import Client from "../providers/ClientProvider";
 import Topbar from "./_components/topbar";
 import { notFound } from "next/navigation";
 import { theme } from "../theme";
+import LeftSideBar from "./_components/left-sidebar";
 
 export default async function MainLayout({
   children,
@@ -25,7 +26,16 @@ export default async function MainLayout({
           height="calc(100vh - 88px)"
           maxHeight="calc(100vh - 88px)"
         >
-          {children}
+          <Box
+            display="flex"
+            height="100%"
+            width="100%"
+            maxWidth={1920}
+            mx="auto"
+          >
+            <LeftSideBar flex={0.3} />
+            {children}
+          </Box>
         </Box>
       </Box>
     </Client>

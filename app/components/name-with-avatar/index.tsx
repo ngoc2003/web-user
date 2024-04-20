@@ -1,16 +1,24 @@
 "use client";
 
 import { theme } from "@/app/theme";
-import { Avatar, Box, Typography } from "@mui/material";
+import { Avatar, Box, BoxProps, Typography } from "@mui/material";
+import { omit } from "lodash";
 import React from "react";
 
-interface NameWithAvatarProps {
+interface NameWithAvatarProps extends BoxProps {
   name: string;
 }
 
-const NameWithAvatar = ({ name }: NameWithAvatarProps) => {
+const NameWithAvatar = ({ name, ...props }: NameWithAvatarProps) => {
   return (
-    <Box display="flex" alignItems="center" px={2} pb={2}>
+    <Box
+      sx={{ cursor: "pointer", ...props?.sx }}
+      display="flex"
+      alignItems="center"
+      px={2}
+      pb={2}
+      {...omit(props, ["sx"])}
+    >
       <Avatar sx={{ bgcolor: theme.palette.primary.light }}>
         {name.charAt(0)}
       </Avatar>

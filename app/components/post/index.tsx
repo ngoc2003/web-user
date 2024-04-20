@@ -15,27 +15,36 @@ import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import TuneRoundedIcon from "@mui/icons-material/TuneRounded";
 import { useUser } from "@/app/hooks/useUser";
 import Comment from "../comment";
-import { ExtendedPostType } from "@/app/api/post";
 import { formatDistance } from "date-fns";
 import EditIcon from "@mui/icons-material/Edit";
 import { useUpdatePostModal } from "@/app/hooks/useUpdatePostModal";
 import { useDeletePost } from "@/app/services/post";
 import DeleteIcon from "@mui/icons-material/Delete";
 import toast from "react-hot-toast";
-import { CommentType, ExtendedCommentType } from "@/app/api/comment";
 import CommentInput from "./comment-input";
 import Actions from "./actions";
+import { useRouter } from "next/navigation";
+import {
+  CommentType,
+  ExtendedCommentType,
+  ExtendedPostType,
+} from "@/app/types/user";
+import Image from "next/image";
+import PCImageSlider from "../image-slider";
 
 const NUMBER_OF_COMMENTS_WILL_LOAD_MORE = 5;
 
 const Post = (props: ExtendedPostType) => {
   const inputCommentRef = useRef<HTMLInputElement | null>(null);
-
+  const router = useRouter();
   const { user } = useUser();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [openImageSlider, setOpenImageSlider] = useState(false);
   const open = !!anchorEl;
   const updatePost = useUpdatePostModal();
   const { mutate: deletePost } = useDeletePost();
+
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const numberOfComment = useRef<number>(4);
 
@@ -115,7 +124,12 @@ const Post = (props: ExtendedPostType) => {
         <Avatar sx={{ bgcolor: theme.palette.primary.light }}>
           {props.user.name.charAt(0)}
         </Avatar>
-        <Box ml={2} flex={1}>
+        <Box
+          sx={{ cursor: "pointer" }}
+          ml={2}
+          flex={1}
+          onClick={() => router.push("/user/" + user.id)}
+        >
           <Typography fontWeight={600}>{props.user.name}</Typography>
           <Typography color={theme.palette.grey[600]}>
             {formatDistance(new Date(props.created_at), new Date(), {
@@ -168,17 +182,39 @@ const Post = (props: ExtendedPostType) => {
         </Box>
       </Box>
       <Typography mt={1}>{props.content}</Typography>
-      {/* <Box position="relative" height={400} mt={1.5}>
-        <Image
-          src="/demoPost.png"
-          fill
-          alt="Post"
-          style={{
-            objectFit: "cover",
-          }}
-        />
-      </Box> */}
 
+      <Box sx={{ cursor: "pointer" }}>
+        {props.images?.length &&
+          props?.images.map((image, index) => (
+            <Box
+              key={image.id}
+              textAlign="center"
+              bgcolor={theme.palette.grey[200]}
+              mt={1}
+              onClick={() => {
+                setActiveIndex(index);
+                setOpenImageSlider(true);
+              }}
+            >
+              <Image
+                width={0}
+                height={0}
+                sizes="100vw"
+                src={image.link}
+                alt="Image"
+                style={{ width: "100%", height: "auto", maxWidth: 400 }}
+                objectFit="contain"
+              />
+            </Box>
+          ))}
+      </Box>
+
+      <PCImageSlider
+        open={openImageSlider}
+        activeIndex={activeIndex}
+        onClose={() => setOpenImageSlider(false)}
+        images={props.images}
+      />
       {/* <Box
         mt={2}
         display="flex"

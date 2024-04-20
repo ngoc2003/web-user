@@ -4,6 +4,9 @@ const nextConfig = {
   experimental: {
     missingSuspenseWithCSRBailout: false,
   },
+  images: {
+    domains: ["basepaws.com", "firebasestorage.googleapis.com"],
+  },
 };
 
 export default nextConfig;

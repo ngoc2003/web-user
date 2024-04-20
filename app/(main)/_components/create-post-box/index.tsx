@@ -1,5 +1,6 @@
 "use client";
 
+import CreatePostModal from "@/app/components/modal/CreatePostModal";
 import PCTextField from "@/app/components/textfield";
 import { useCreatePostModal } from "@/app/hooks/useCreatePostModal";
 import { useUser } from "@/app/hooks/useUser";
@@ -96,6 +97,10 @@ const CreatePostBox = () => {
           </Box>
         </>
       )}
+      <CreatePostModal
+        onClose={() => createPostModal.onClose()}
+        open={createPostModal.isOpen}
+      />
     </Box>
   );
 };

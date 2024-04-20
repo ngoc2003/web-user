@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { omit } from "lodash";
 import React, { useMemo } from "react";
-import Invitation from "../invitation";
+import Invitation from "../../../_components/invitation";
 import SuggestedUser from "@/app/components/suggested-user";
 
 const MOCK_CHIPS = [
@@ -25,19 +25,11 @@ interface RightSidebarProps extends BoxProps {}
 
 const RightSidebar = (props: RightSidebarProps) => {
   const { user } = useUser();
-
-  const time = useMemo<string>(() => {
-    const date = new Date().getHours();
-    if (date < 12) return "morning";
-    if (date < 18) return "afternoon";
-    return "evening";
-  }, []);
-
   if (!user) return;
   return (
     <Box
       p={2}
-      sx={{ overflowY: "scroll", ...props?.sx }}
+      sx={{ overflowY: "scroll", bgcolor: "transparent", ...props?.sx }}
       maxHeight="100%"
       {...omit(props, ["sx"])}
     >
@@ -57,7 +49,7 @@ const RightSidebar = (props: RightSidebarProps) => {
 
       <Divider />
 
-      <Box my={3}>
+      {/* <Box my={3}>
         <Typography variant="title2">Suggested user</Typography>
 
         <Box mt={3}>
@@ -65,7 +57,7 @@ const RightSidebar = (props: RightSidebarProps) => {
             <SuggestedUser key={1 * index} />
           ))}
         </Box>
-      </Box>
+      </Box> */}
     </Box>
   );
 };

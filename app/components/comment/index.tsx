@@ -1,8 +1,8 @@
 "use client";
 
-import { ExtendedCommentType } from "@/app/api/comment";
 import { useLikeComment, useUnlikeComment } from "@/app/services/comment";
 import { theme } from "@/app/theme";
+import { ExtendedCommentType } from "@/app/types/user";
 import { Avatar, Box, Typography } from "@mui/material";
 import { formatDistance } from "date-fns";
 import React, { useState } from "react";
