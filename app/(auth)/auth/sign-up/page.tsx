@@ -50,7 +50,6 @@ const SignUpPage = () => {
         toast.success("Otp was sent. Please check your email.");
       },
       onError: (response: any) => {
-        console.log(response);
         if (response.response?.data?.errors)
           toast.error(
             Object.values(response.response?.data?.errors).toString()

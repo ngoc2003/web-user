@@ -7,6 +7,7 @@ import { Box, BoxProps, Button, Typography } from "@mui/material";
 import Image from "next/image";
 import React, { memo } from "react";
 import FolowList from "../follow-list";
+import { useCreatePetModal } from "@/app/hooks/useCreatePetModal";
 
 const RANDOM_QUOTES_FACT = [
   "Cats need regular vet checkups to keep purring.",
@@ -55,6 +56,8 @@ const SideContent = ({
   showQuotes = true,
   ...props
 }: SideContentProps) => {
+  const { onToggle } = useCreatePetModal();
+
   return (
     <Box px={2} pb={5} overflow="scroll" {...props}>
       {showQuotes && (
@@ -113,6 +116,7 @@ const SideContent = ({
         </Typography>
 
         <Button
+          onClick={onToggle}
           size="small"
           variant="text"
           color="primary"

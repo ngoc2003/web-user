@@ -6,12 +6,15 @@ import React from "react";
 import UserProfileMainContent from "./section/main-content";
 import SideContent from "./section/side-content";
 import { theme } from "@/app/theme";
+import CreatePetModal from "@/app/components/modal/CreatePetModal";
+import { useCreatePetModal } from "@/app/hooks/useCreatePetModal";
 
 const UserProfilePage = () => {
   const { id } = useParams();
   const data = useGetUserInfoById(+id);
   const user = data?.data?.data;
   const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
+  const { isOpen, onClose } = useCreatePetModal();
 
   if (!id || !user) return null;
 
@@ -27,6 +30,8 @@ const UserProfilePage = () => {
           width={442}
         />
       )}
+
+      <CreatePetModal open={isOpen} onClose={onClose} />
     </>
   );
 };

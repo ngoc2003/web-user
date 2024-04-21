@@ -7,7 +7,7 @@ export const ModalContainer = styled(Box)`
   margin-left: auto;
   margin-right: auto;
   max-height: 90vh;
-  max-width: 95vw;
+  max-width: 98vw;
   overflow-y: auto;
   position: relative;
   top: 50%;

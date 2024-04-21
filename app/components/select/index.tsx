@@ -60,7 +60,9 @@ const PCSelect = ({
         disableUnderline
         variant="standard"
         IconComponent={props.IconComponent ?? KeyboardArrowDown}
-        defaultValue={props.defaultValue ?? options[0].value}
+        defaultValue={
+          props.defaultValue ?? (options.length > 0 ? options[0].value : null)
+        }
         displayEmpty
       >
         {!!placeholder && (

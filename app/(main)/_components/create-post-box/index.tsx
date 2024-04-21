@@ -16,27 +16,42 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import Image from "next/image";
-import React from "react";
-
-const BUTTON_ACTIONS = [
-  {
-    label: "Upload pictures",
-    url: "/icons/camera.svg",
-  },
-  {
-    label: "Your feeling",
-    url: "/icons/faceSmile.svg",
-  },
-  {
-    label: "Check-in",
-    url: "/icons/mapPin.svg",
-  },
-];
+import React, { useMemo, useRef } from "react";
 
 const CreatePostBox = () => {
   const { user } = useUser();
   const createPostModal = useCreatePostModal();
   const isMiniMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const createPostModalRef = useRef<any>();
+
+  const handleOpenUploadImageBox = () => {
+    createPostModal.onToggle();
+    setTimeout(() => {
+      createPostModalRef.current?.handleOpenUploadImageBox();
+    }, 200);
+  };
+
+  const BUTTON_ACTIONS = useMemo(
+    () => [
+      {
+        label: "Upload pictures",
+        url: "/icons/camera.svg",
+        onClick: handleOpenUploadImageBox,
+      },
+      {
+        label: "Your feeling",
+        url: "/icons/faceSmile.svg",
+        onClick: () => {},
+      },
+      {
+        label: "Check-in",
+        url: "/icons/mapPin.svg",
+        onClick: () => {},
+      },
+    ],
+    []
+  );
 
   if (!user) return;
 
@@ -65,7 +80,12 @@ const CreatePostBox = () => {
 
           <Box display="flex" gap={1} justifyContent="between">
             {BUTTON_ACTIONS.map((btn) => (
-              <Button key={btn.label} variant="text" fullWidth>
+              <Button
+                key={btn.label}
+                variant="text"
+                fullWidth
+                onClick={btn.onClick}
+              >
                 <Icon>
                   <Image src={btn.url} width={24} height={24} alt="camera" />
                 </Icon>
@@ -98,6 +118,7 @@ const CreatePostBox = () => {
         </>
       )}
       <CreatePostModal
+        ref={createPostModalRef}
         onClose={() => createPostModal.onClose()}
         open={createPostModal.isOpen}
       />

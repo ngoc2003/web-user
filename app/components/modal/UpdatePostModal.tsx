@@ -75,7 +75,6 @@ const UpdatePostModal = (props: Omit<PCModalProps, "children">) => {
 
   const handleDeleteImage = (imageId: string) => {
     setImages((prev) => prev.filter((img) => img !== imageId));
-    console.log(imageId);
     if (!imageId.startsWith("blob")) {
       setImagesToDelete((prev) => [...prev, imageId]);
     }
