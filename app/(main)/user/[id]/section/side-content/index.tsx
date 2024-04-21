@@ -8,6 +8,7 @@ import Image from "next/image";
 import React, { memo } from "react";
 import FolowList from "../follow-list";
 import { useCreatePetModal } from "@/app/hooks/useCreatePetModal";
+import { useRouter } from "next/navigation";
 
 const RANDOM_QUOTES_FACT = [
   "Cats need regular vet checkups to keep purring.",
@@ -57,7 +58,7 @@ const SideContent = ({
   ...props
 }: SideContentProps) => {
   const { onToggle } = useCreatePetModal();
-
+  const router = useRouter();
   return (
     <Box px={2} pb={5} overflow="scroll" {...props}>
       {showQuotes && (
@@ -135,7 +136,13 @@ const SideContent = ({
       >
         {!!pets?.length ? (
           pets.map((pet) => (
-            <Box key={pet.id} mr={2} width={110}>
+            <Box
+              sx={{ cursor: "pointer" }}
+              onClick={() => router.push("/pet/" + pet.id)}
+              key={pet.id}
+              mr={2}
+              width={110}
+            >
               <Box borderRadius={3} overflow="hidden">
                 <Image
                   src={pet.image}

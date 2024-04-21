@@ -93,7 +93,7 @@ const CreatePostBox = () => {
               </Button>
             ))}
           </Box>
-
+          {/* 
           <Divider sx={{ mt: 1.5, mb: 3 }} />
           <Box display="flex" gap={2} alignItems="center" flexWrap="wrap">
             <Typography color={theme.palette.grey[500]}>With</Typography>
@@ -114,7 +114,7 @@ const CreatePostBox = () => {
                 label="Harry James"
               />
             ))}
-          </Box>
+          </Box> */}
         </>
       )}
       <CreatePostModal

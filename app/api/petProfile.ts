@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
 import { PCConnectionInstance } from ".";
-import { SEX_TYPE } from "../types/user";
+import { ExtendedPetType, SEX_TYPE } from "../types/user";
 
 export interface AddPetBody {
   name: string;
@@ -23,4 +23,8 @@ export const addPet = async (body: AddPetBody) => {
     `/pet_profile`,
     body
   );
+};
+
+export const getPetById = async (id: string) => {
+  return PCConnectionInstance.get<void, AxiosResponse<ExtendedPetType>>("/pet_profile/" + id);
 };

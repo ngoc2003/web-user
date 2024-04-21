@@ -184,7 +184,7 @@ const Post = (props: ExtendedPostType) => {
       <Typography mt={1}>{props.content}</Typography>
 
       <Box sx={{ cursor: "pointer" }}>
-        {props.images?.length &&
+        {!!props.images?.length &&
           props?.images.map((image, index) => (
             <Box
               key={image.id}

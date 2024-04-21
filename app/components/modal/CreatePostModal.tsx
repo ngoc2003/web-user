@@ -23,10 +23,12 @@ import SendIcon from "@mui/icons-material/Send";
 import { useAddPost } from "@/app/services/post";
 import toast from "react-hot-toast";
 import { useUploadImage } from "@/app/hooks/useUploadImage";
+import { useRouter } from "next/navigation";
 
 const CreatePostModal = forwardRef<any, Omit<PCModalProps, "children">>(
   ({ ...props }, ref) => {
     const { user } = useUser();
+    const router = useRouter();
     const { mutate, isLoading } = useAddPost();
     const [inputValue, setInputValue] = useState<string>("");
     const [images, setImages] = useState<File[] | null>(null);
@@ -82,6 +84,7 @@ const CreatePostModal = forwardRef<any, Omit<PCModalProps, "children">>(
           onSuccess: () => {
             toast.success("Create post successfully.");
             props.onClose?.({}, "escapeKeyDown");
+            window.location.reload();
           },
         }
       );

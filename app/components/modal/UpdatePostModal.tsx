@@ -107,7 +107,7 @@ const UpdatePostModal = (props: Omit<PCModalProps, "children">) => {
             sx={{ bgcolor: "transparent" }}
           />
           <Box>
-            {images?.length &&
+            {!!images?.length &&
               images.map((image) => (
                 <Box key={image} position="relative" mt={1}>
                   <IconButton

@@ -107,6 +107,42 @@ export interface PetType extends CommonType {
 
 export interface ExtendedPetType extends PetType {
   pet_type: PetTypeType;
+  med: CommonType & {
+    pet_id: number;
+    favoriteFood: string;
+    isFriendlyWithDog: boolean;
+    isFriendlyWithCat: boolean;
+    isCleanProperly: boolean;
+    isHyperactive: boolean;
+    isFriendlyWithKid: boolean;
+    isShy: boolean;
+    allergies: AllergyType[];
+    weights: WeightHistoryType[];
+    deworms: DewormHistoryType[];
+    vaccinations: VaccinationType[];
+  };
+}
+
+export interface AllergyType extends CommonType {
+  description: string;
+  medical_record_id: number;
+}
+export interface DewormHistoryType extends CommonType {
+  description: string;
+  medical_record_id: number;
+  time: Date;
+}
+export interface VaccinationType extends CommonType {
+  description: string;
+  medical_record_id: number;
+  time: Date;
+  name: string;
+}
+export interface WeightHistoryType extends CommonType {
+  description: string;
+  medical_record_id: number;
+  time: Date;
+  weight: number;
 }
 
 export interface ImageType extends CommonType {

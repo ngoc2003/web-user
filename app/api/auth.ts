@@ -31,7 +31,7 @@ export interface ResendVerifyTokenBody {
 }
 
 export const logIn = async (body: LoginBody) => {
-  return PCConnectionInstance.post("/auth/login", body);
+  return PCConnectionInstance.post<any, LoginResponse>("/auth/login", body);
 };
 
 export const logOut = async () => {

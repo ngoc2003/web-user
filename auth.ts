@@ -2,7 +2,8 @@ import { LoginResponse, logIn, logOut } from "@/app/api/auth";
 import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PCConnectionInstance } from "./app/api";
-import { AxiosError } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
+import { UserType } from "./app/types/user";
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -15,12 +16,12 @@ export const authOptions: AuthOptions = {
       async authorize(credentials) {
         try {
           if (!credentials?.email || !credentials?.password) {
-            throw new Error("Invalid credentials");
+            throw new Error("Invalid");
           }
           const data: any = await logIn(credentials);
 
           if (!data) {
-            throw new Error("Invalid credentials");
+            throw new Error("No user found");
           }
 
           PCConnectionInstance.interceptors.request.use(
