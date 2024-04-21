@@ -50,6 +50,7 @@ const PetProfilePage = () => {
   };
 
   if (!data) return;
+
   const basicInformation = [
     {
       label: "Name",
@@ -83,8 +84,8 @@ const PetProfilePage = () => {
     },
   ];
 
-  const characteristic = Object.keys(data.med).filter(
-    (key) => key.startsWith("is") && data.med[key]
+  const characteristic = Object.keys(data.med as { [key: string]: any}).filter(
+    (key) => key.startsWith("is") && (data as any).med[key]
   );
 
   return (

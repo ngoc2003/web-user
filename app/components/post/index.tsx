@@ -85,6 +85,7 @@ const Post = (props: ExtendedPostType) => {
         } as ExtendedCommentType,
       ]);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [user?.id]
   );
 
@@ -106,6 +107,7 @@ const Post = (props: ExtendedPostType) => {
     );
     numberOfComment.current =
       numberOfComment.current + NUMBER_OF_COMMENTS_WILL_LOAD_MORE;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.comments.length]);
 
   if (!user || !props.user) return;

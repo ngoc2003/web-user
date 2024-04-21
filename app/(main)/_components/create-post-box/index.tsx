@@ -50,6 +50,7 @@ const CreatePostBox = () => {
         onClick: () => {},
       },
     ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 

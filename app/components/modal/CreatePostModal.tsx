@@ -155,7 +155,10 @@ const CreatePostModal = forwardRef<any, Omit<PCModalProps, "children">>(
                     accept: "image/png, image/gif, image/jpeg",
                     multiple: true,
                   }}
-                  onChange={(e) => setImages(Array.from(e.target.files))}
+                  onChange={(e) => {
+                    const input = e.target as HTMLInputElement;
+                    setImages(Array.from(input.files ?? []));
+                  }}
                   sx={{ display: "none" }}
                 />
                 <Image

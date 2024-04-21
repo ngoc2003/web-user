@@ -62,9 +62,10 @@ const CreatePetModal = forwardRef<any, Omit<PCModalProps, "children">>(
         }
         return acc;
       }, {});
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data?.length]);
 
-    const [loves, setLoves] = React.useState({
+    const [loves, setLoves] = React.useState<{ [key: string]: boolean }>({
       dry: true,
       wet: false,
       fresh: false,

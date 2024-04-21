@@ -19,8 +19,6 @@ const PCImageSlider = ({
 }: PCImageSliderProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(activeIndex);
 
-  if (!images?.length) return null;
-
   const handleNext = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
   };
@@ -34,6 +32,8 @@ const PCImageSlider = ({
   useEffect(() => {
     setCurrentImageIndex(activeIndex);
   }, [activeIndex]);
+
+  if (!images?.length) return null;
 
   return (
     <Modal

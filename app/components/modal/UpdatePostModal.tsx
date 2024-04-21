@@ -64,14 +64,15 @@ const UpdatePostModal = (props: Omit<PCModalProps, "children">) => {
     }
   };
 
-  const handleAddImage = (event: any) => {
-    const files = Array.from(event.target.files);
+  const handleAddImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files || []);
     setImages((prev) => [
       ...prev,
       ...files.map((file) => URL.createObjectURL(file)),
     ]);
     setNewImages((prev) => [...prev, ...files]);
   };
+  
 
   const handleDeleteImage = (imageId: string) => {
     setImages((prev) => prev.filter((img) => img !== imageId));
