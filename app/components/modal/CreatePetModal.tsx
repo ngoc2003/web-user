@@ -220,10 +220,12 @@ const CreatePetModal = forwardRef<any, Omit<PCModalProps, "children">>(
                           value: item.id,
                           label: capitalize(item.name),
                         }))
-                      : petsByType[Object.keys(petsByType)[0]].map((item) => ({
+                      : petsByType
+                      ? petsByType[Object.keys(petsByType)[0]].map((item) => ({
                           value: item.id,
                           label: capitalize(item.name),
                         }))
+                      : []
                   }
                 />
                 <PCSelect

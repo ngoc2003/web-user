@@ -102,14 +102,20 @@ const LeftSideBar = (props: LeftSideBarProps) => {
         )}
         {!isMiniMobile && (
           <NameWithAvatar
-            onClick={() => router.push("/user/" + user.id)}
+            onClick={() => {
+              router.push("/user/" + user.id);
+              toggleSidebarLeft.onToggle();
+            }}
             name={user.name}
           />
         )}
         <MenuList sx={{ flex: 1 }}>
           {LIST_LINK.map((link) => (
             <MenuItem
-              onClick={() => router.push(link.link)}
+              onClick={() => {
+                router.push(link.link);
+                toggleSidebarLeft.onToggle();
+              }}
               key={link.label}
               sx={{
                 px: 3,

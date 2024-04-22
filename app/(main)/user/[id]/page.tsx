@@ -8,15 +8,19 @@ import SideContent from "./section/side-content";
 import { theme } from "@/app/theme";
 import CreatePetModal from "@/app/components/modal/CreatePetModal";
 import { useCreatePetModal } from "@/app/hooks/useCreatePetModal";
+import { useEditProfileModal } from "@/app/hooks/useEditProfileModal";
+import EditProfileModal from "@/app/components/modal/EditProfileModal";
+import { useUser } from "@/app/hooks/useUser";
 
 const UserProfilePage = () => {
   const { id } = useParams();
   const data = useGetUserInfoById(+id);
   const user = data?.data?.data;
+  const { user: currentUser } = useUser();
   const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
-  const { isOpen, onClose } = useCreatePetModal();
+  
 
-  if (!id || !user) return null;
+  if (!id || !user || !currentUser) return null;
 
   return (
     <>
@@ -31,7 +35,7 @@ const UserProfilePage = () => {
         />
       )}
 
-      <CreatePetModal open={isOpen} onClose={onClose} />
+      
     </>
   );
 };

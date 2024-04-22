@@ -13,12 +13,13 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import SettingsIcon from "@mui/icons-material/Settings";
 import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
+import SettingModal from "@/app/components/modal/SettingModal";
 
 interface MenuUserProps {
   user: CustomUserType;
@@ -26,6 +27,7 @@ interface MenuUserProps {
 
 const MenuUser = ({ user }: MenuUserProps) => {
   const router = useRouter();
+  const [isOpenSettingModal, setIsOpenSettingModal] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = !!anchorEl;
 
@@ -66,13 +68,19 @@ const MenuUser = ({ user }: MenuUserProps) => {
           <Typography color={theme.palette.grey[600]}>{user.email}</Typography>
         </Box>
         <Divider sx={{ mb: 1, mt: 0 }} />
-        <MenuItem onClick={handleClose}>
+        <MenuItem
+          onClick={() => {
+            setIsOpenSettingModal(true);
+            handleClose();
+          }}
+        >
           <ListItemIcon>
             <SettingsIcon />
           </ListItemIcon>
           <Typography>Setting</Typography>
         </MenuItem>
         <MenuItem
+          sx={{ cursor: "pointer" }}
           onClick={() => {
             router.push("/user/" + user.id);
             handleClose();
@@ -96,6 +104,11 @@ const MenuUser = ({ user }: MenuUserProps) => {
           <Typography>Logout</Typography>
         </MenuItem>
       </Menu>
+
+      <SettingModal
+        open={isOpenSettingModal}
+        onClose={() => setIsOpenSettingModal(false)}
+      />
     </Box>
   );
 };

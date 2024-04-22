@@ -24,6 +24,10 @@ import { useDeleteAllergy } from "@/app/services/allergy";
 import toast from "react-hot-toast";
 import RightSidebar from "../../home/section/right-sidebar";
 import { useUser } from "@/app/hooks/useUser";
+import CreateDewormHistoryModal from "@/app/components/modal/CreateWormHistoryModal";
+import DewormHistoryBox from "../_component/deworm-history-box";
+import VaccinationHistoryBox from "../_component/vaccination-history-box";
+import CreateVaccinationHistoryModal from "@/app/components/modal/CreateVaccinationHistoryModal";
 
 const PetProfilePage = () => {
   const { id } = useParams();
@@ -35,7 +39,7 @@ const PetProfilePage = () => {
     () => data?.user_id + "" === user?.id + "",
     [data?.user_id, user?.id]
   );
-
+  
   const { mutate: deleteAllergy, isLoading: deleteAllergyLoading } =
     useDeleteAllergy();
 
@@ -44,6 +48,8 @@ const PetProfilePage = () => {
   const [modalState, setModalState] = useState({
     createAllergies: false,
     deleteAllergies: false,
+    createDewormHistory: false,
+    createVaccinationHistory: false,
   });
 
   const handleDeleteAllergy = () => {
@@ -98,10 +104,10 @@ const PetProfilePage = () => {
 
   return (
     <>
-      <Box width="100%">
-        <Typography variant="h4" color="primary" m={2} mt={0}>
+      <Box width="100%" sx={{ overflowY: "auto" }}>
+        {/* <Typography variant="h4" color="primary" m={2} mt={0}>
           {data.name}&apos;s profile
-        </Typography>
+        </Typography> */}
         <Box
           p={2}
           bgcolor={theme.palette.common.white}
@@ -126,8 +132,20 @@ const PetProfilePage = () => {
           <Box flex={1}>
             <Box display="grid" gridTemplateColumns="repeat(3, 1fr)">
               {basicInformation.map((in4) => (
-                <Box mb={1} display="flex" key={in4.label}>
+                <Box
+                  sx={{
+                    ":hover": {
+                      ".basicIn4": {
+                        color: theme.palette.primary.main,
+                      },
+                    },
+                  }}
+                  mb={1}
+                  display="flex"
+                  key={in4.label}
+                >
                   <Box
+                    className="basicIn4"
                     borderRadius={2}
                     sx={{
                       mr: 2,
@@ -136,6 +154,7 @@ const PetProfilePage = () => {
                       height: 44,
                       display: "grid",
                       placeItems: "center",
+                      transition: "0.2s",
                     }}
                   >
                     {in4.icon}
@@ -149,10 +168,23 @@ const PetProfilePage = () => {
                 </Box>
               ))}
             </Box>
-            <Box mb={1} display="flex">
+            <Box
+              sx={{
+                ":hover": {
+                  ".basicIn4": {
+                    color: theme.palette.primary.main,
+                  },
+                },
+              }}
+              mb={1}
+              display="flex"
+            >
               <Box
+                className="basicIn4"
                 borderRadius={2}
                 sx={{
+                  transition: "0.2s",
+
                   mr: 2,
                   bgcolor: theme.palette.grey[200],
                   width: 44,
@@ -251,7 +283,76 @@ const PetProfilePage = () => {
             <PCNotFoundData />
           )}
         </Box>
+
+        <Box display="flex" justifyContent="space-between">
+          <Typography variant="h6" m={2}>
+            Worm history
+          </Typography>
+          {isAuthor && (
+            <Button
+              onClick={() =>
+                setModalState((prev) => ({
+                  ...prev,
+                  createDewormHistory: true,
+                }))
+              }
+              sx={{ color: theme.palette.primary.main }}
+            >
+              Add
+            </Button>
+          )}
+        </Box>
+        <Box bgcolor={theme.palette.common.white} p={2}>
+          {data.med.deworms.length ? (
+            <DewormHistoryBox
+              data={data.med.deworms.map((d) => ({
+                id: d.id,
+                created_at: d.created_at,
+                description: d.description,
+                time: d.time,
+              }))}
+            />
+          ) : (
+            <PCNotFoundData />
+          )}
+        </Box>
+
+        <Box display="flex" justifyContent="space-between">
+          <Typography variant="h6" m={2}>
+            Vaccination history
+          </Typography>
+          {isAuthor && (
+            <Button
+              onClick={() =>
+                setModalState((prev) => ({
+                  ...prev,
+                  createVaccinationHistory: true,
+                }))
+              }
+              sx={{ color: theme.palette.primary.main }}
+            >
+              Add
+            </Button>
+          )}
+        </Box>
+        <Box bgcolor={theme.palette.common.white} p={2}>
+          {data.med.vaccinations.length ? (
+            <VaccinationHistoryBox
+              data={data.med.vaccinations.map((d) => ({
+                id: d.id,
+                created_at: d.created_at,
+                description: d.description,
+                time: d.time,
+                name: d.name,
+              }))}
+            />
+          ) : (
+            <PCNotFoundData />
+          )}
+        </Box>
       </Box>
+
+      <RightSidebar />
 
       <CreateAllergyModal
         refetch={refetch}
@@ -259,6 +360,26 @@ const PetProfilePage = () => {
         open={modalState.createAllergies}
         onClose={() =>
           setModalState((prev) => ({ ...prev, createAllergies: false }))
+        }
+      />
+
+      <CreateDewormHistoryModal
+        refetch={refetch}
+        medical_record_id={data.med.id}
+        open={modalState.createDewormHistory}
+        onClose={() =>
+          setModalState((prev) => ({ ...prev, createDewormHistory: false }))
+        }
+      />
+      <CreateVaccinationHistoryModal
+        refetch={refetch}
+        medical_record_id={data.med.id}
+        open={modalState.createVaccinationHistory}
+        onClose={() =>
+          setModalState((prev) => ({
+            ...prev,
+            createVaccinationHistory: false,
+          }))
         }
       />
 

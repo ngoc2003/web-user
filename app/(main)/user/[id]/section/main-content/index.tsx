@@ -58,8 +58,6 @@ const UserProfileMainContent = ({ user, ...props }: UserProfileMainContent) => {
     }
   };
 
-  console.log(user);
-
   const isAuthor = useMemo(() => {
     return user?.id + "" === currentUser?.id + "";
   }, [currentUser?.id, user?.id]);
@@ -173,7 +171,6 @@ const UserProfileMainContent = ({ user, ...props }: UserProfileMainContent) => {
           ))}
       </Box>
 
-      <EditProfileModal user={currentUser} open={isOpen} onClose={onClose} />
     </Box>
   );
 };
