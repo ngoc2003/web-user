@@ -74,7 +74,7 @@ const UserProfileMainContent = ({ user, ...props }: UserProfileMainContent) => {
   }
 
   return (
-    <Box borderRadius={2} pb={4} overflow="auto" {...props}>
+    <Box borderRadius={2} pb={4} sx={{ overflowY: "scroll" }} {...props}>
       <Box p={2} bgcolor={theme.palette.common.white} borderRadius={2} mb={2}>
         <Box borderRadius={2} overflow="hidden">
           <Image
@@ -170,7 +170,6 @@ const UserProfileMainContent = ({ user, ...props }: UserProfileMainContent) => {
             <Post key={post.id} {...post} />
           ))}
       </Box>
-
     </Box>
   );
 };

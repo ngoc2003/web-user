@@ -28,7 +28,28 @@ import CreateDewormHistoryModal from "@/app/components/modal/CreateWormHistoryMo
 import DewormHistoryBox from "../_component/deworm-history-box";
 import VaccinationHistoryBox from "../_component/vaccination-history-box";
 import CreateVaccinationHistoryModal from "@/app/components/modal/CreateVaccinationHistoryModal";
+import CreateWeightHistoryModal from "@/app/components/modal/CreateWeightHistoryModal";
+import { Line } from "react-chartjs-2";
 
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 const PetProfilePage = () => {
   const { id } = useParams();
 
@@ -39,7 +60,7 @@ const PetProfilePage = () => {
     () => data?.user_id + "" === user?.id + "",
     [data?.user_id, user?.id]
   );
-  
+
   const { mutate: deleteAllergy, isLoading: deleteAllergyLoading } =
     useDeleteAllergy();
 
@@ -50,6 +71,7 @@ const PetProfilePage = () => {
     deleteAllergies: false,
     createDewormHistory: false,
     createVaccinationHistory: false,
+    createWeightHistory: false,
   });
 
   const handleDeleteAllergy = () => {
@@ -350,6 +372,51 @@ const PetProfilePage = () => {
             <PCNotFoundData />
           )}
         </Box>
+
+        <Box display="flex" justifyContent="space-between">
+          <Typography variant="h6" m={2}>
+            Weight history
+          </Typography>
+          {isAuthor && (
+            <Button
+              onClick={() =>
+                setModalState((prev) => ({
+                  ...prev,
+                  createWeightHistory: true,
+                }))
+              }
+              sx={{ color: theme.palette.primary.main }}
+            >
+              Add
+            </Button>
+          )}
+        </Box>
+
+        <Box bgcolor={theme.palette.common.white} p={2}>
+          {data.med.weights.length ? (
+            <>
+              <Line
+                width="100%"
+                height={30}
+                data={{
+                  labels: data.med.weights.map((w) =>
+                    format(new Date(w.time), "dd/MM/yyyy")
+                  ),
+                  datasets: [
+                    {
+                      data: data.med.weights.map((w) => w.weight),
+                      label: "Mi mi",
+                      borderColor: theme.palette.primary.main,
+                      fill: false,
+                    },
+                  ],
+                }}
+              />
+            </>
+          ) : (
+            <PCNotFoundData />
+          )}
+        </Box>
       </Box>
 
       <RightSidebar />
@@ -360,6 +427,14 @@ const PetProfilePage = () => {
         open={modalState.createAllergies}
         onClose={() =>
           setModalState((prev) => ({ ...prev, createAllergies: false }))
+        }
+      />
+      <CreateWeightHistoryModal
+        refetch={refetch}
+        medical_record_id={data.med.id}
+        open={modalState.createWeightHistory}
+        onClose={() =>
+          setModalState((prev) => ({ ...prev, createWeightHistory: false }))
         }
       />
 

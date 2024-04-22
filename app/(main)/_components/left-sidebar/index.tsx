@@ -78,7 +78,7 @@ const LeftSideBar = (props: LeftSideBarProps) => {
         display="flex"
         flexDirection="column"
         sx={{
-          overflowX: "auto",
+          overflowX: "scroll",
           [theme.breakpoints.down("lg")]: {
             position: "fixed",
             top: 0,
