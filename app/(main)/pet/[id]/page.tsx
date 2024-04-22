@@ -5,7 +5,7 @@ import { theme } from "@/app/theme";
 import { Box, Button, IconButton, Typography } from "@mui/material";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import MaleIcon from "@mui/icons-material/Male";
 import PetsIcon from "@mui/icons-material/Pets";
 import FemaleIcon from "@mui/icons-material/Female";
@@ -22,11 +22,19 @@ import { Close } from "@mui/icons-material";
 import ConfirmModal from "@/app/components/modal/ConfirmModal";
 import { useDeleteAllergy } from "@/app/services/allergy";
 import toast from "react-hot-toast";
+import RightSidebar from "../../home/section/right-sidebar";
+import { useUser } from "@/app/hooks/useUser";
 
 const PetProfilePage = () => {
   const { id } = useParams();
 
   const { data, refetch } = useGetPetById(id + "");
+  const { user } = useUser();
+
+  const isAuthor = useMemo(
+    () => data?.user_id + "" === user?.id + "",
+    [data?.user_id, user?.id]
+  );
 
   const { mutate: deleteAllergy, isLoading: deleteAllergyLoading } =
     useDeleteAllergy();
@@ -84,7 +92,7 @@ const PetProfilePage = () => {
     },
   ];
 
-  const characteristic = Object.keys(data.med as { [key: string]: any}).filter(
+  const characteristic = Object.keys(data.med as { [key: string]: any }).filter(
     (key) => key.startsWith("is") && (data as any).med[key]
   );
 
@@ -193,14 +201,16 @@ const PetProfilePage = () => {
           <Typography variant="h6" m={2}>
             Allergy
           </Typography>
-          <Button
-            onClick={() =>
-              setModalState((prev) => ({ ...prev, createAllergies: true }))
-            }
-            sx={{ color: theme.palette.primary.main }}
-          >
-            Add
-          </Button>
+          {isAuthor && (
+            <Button
+              onClick={() =>
+                setModalState((prev) => ({ ...prev, createAllergies: true }))
+              }
+              sx={{ color: theme.palette.primary.main }}
+            >
+              Add
+            </Button>
+          )}
         </Box>
 
         <Box
@@ -221,18 +231,20 @@ const PetProfilePage = () => {
                 {capitalize(
                   snakeCase(item.description.replace("is", ""))
                 ).replaceAll("_", " ")}
-                <IconButton
-                  onClick={() => {
-                    setIdToDelete(item.id);
-                    setModalState((prev) => ({
-                      ...prev,
-                      deleteAllergies: true,
-                    }));
-                  }}
-                  sx={{ fontSize: 12, ml: 1 }}
-                >
-                  <Close />
-                </IconButton>
+                {isAuthor && (
+                  <IconButton
+                    onClick={() => {
+                      setIdToDelete(item.id);
+                      setModalState((prev) => ({
+                        ...prev,
+                        deleteAllergies: true,
+                      }));
+                    }}
+                    sx={{ fontSize: 12, ml: 1 }}
+                  >
+                    <Close />
+                  </IconButton>
+                )}
               </Box>
             ))
           ) : (

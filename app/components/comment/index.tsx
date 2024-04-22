@@ -5,6 +5,7 @@ import { theme } from "@/app/theme";
 import { ExtendedCommentType } from "@/app/types/user";
 import { Avatar, Box, Typography } from "@mui/material";
 import { formatDistance } from "date-fns";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -15,6 +16,7 @@ interface CommentProps {
 }
 
 const Comment = ({ data, id, isLike }: CommentProps) => {
+  const router = useRouter();
   const [like, setLike] = useState<boolean>(isLike);
   const { mutate: likeComment, isLoading: isLikeCommentLoading } =
     useLikeComment();
@@ -52,7 +54,12 @@ const Comment = ({ data, id, isLike }: CommentProps) => {
           display="inline-block"
           maxWidth={900}
         >
-          <Typography fontWeight={600} mb={0.25}>
+          <Typography
+            fontWeight={600}
+            mb={0.25}
+            sx={{ cursor: "poiner" }}
+            onClick={() => router.push("/user/" + data.user.id)}
+          >
             {data.user.id === id ? "You" : data.user.name}
           </Typography>
           <Typography>{data.content}</Typography>

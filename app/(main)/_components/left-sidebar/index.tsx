@@ -77,8 +77,8 @@ const LeftSideBar = (props: LeftSideBarProps) => {
         minWidth={220}
         display="flex"
         flexDirection="column"
-        overflow="auto"
         sx={{
+          overflowX: "auto",
           [theme.breakpoints.down("lg")]: {
             position: "fixed",
             top: 0,

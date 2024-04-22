@@ -1,9 +1,8 @@
-import { LoginResponse, logIn, logOut } from "@/app/api/auth";
+import { logIn, logOut } from "@/app/api/auth";
 import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PCConnectionInstance } from "./app/api";
-import { AxiosError, AxiosResponse } from "axios";
-import { UserType } from "./app/types/user";
+import { AxiosError } from "axios";
 
 export const authOptions: AuthOptions = {
   providers: [

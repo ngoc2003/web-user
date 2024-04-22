@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import { omit } from "lodash";
-import React from "react";
+import React, { memo } from "react";
 
 export interface SelectOption {
   value: string | number;
@@ -83,4 +83,4 @@ const PCSelect = ({
   );
 };
 
-export default PCSelect;
+export default memo(PCSelect);

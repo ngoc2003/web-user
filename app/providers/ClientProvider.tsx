@@ -3,6 +3,7 @@
 import React, { useEffect } from "react";
 import { useUser } from "../hooks/useUser";
 import { CustomUserType } from "../types/user";
+import { SessionProvider } from "next-auth/react";
 
 interface ClientProps {
   data: { user: CustomUserType };
@@ -18,7 +19,7 @@ const Client = ({ data, children }: ClientProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.user]);
 
-  return <>{children}</>;
+  return <SessionProvider>{children}</SessionProvider>;
 };
 
 export default Client;

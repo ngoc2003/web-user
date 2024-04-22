@@ -12,6 +12,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import QueryProvider from "./providers/QueryProvider";
 import { Toaster } from "react-hot-toast";
+import { SessionProvider } from "next-auth/react";
 
 export const metadata: Metadata = {
   title: "Pet Connect",

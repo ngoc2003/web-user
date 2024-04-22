@@ -10,13 +10,17 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import Image from "next/image";
-import React from "react";
+import React, { memo, useEffect, useMemo, useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import CreatePostBox from "@/app/(main)/_components/create-post-box";
 import { ExtendedPostType, ExtendedUserType } from "@/app/types/user";
 import Post from "@/app/components/post";
 import SideContent from "../side-content";
-
+import { useEditProfileModal } from "@/app/hooks/useEditProfileModal";
+import EditProfileModal from "@/app/components/modal/EditProfileModal";
+import CheckIcon from "@mui/icons-material/Check";
+import { useFollow, useUnfollow } from "@/app/services/follow";
+import toast from "react-hot-toast";
 interface UserProfileMainContent extends BoxProps {
   user: ExtendedUserType;
 }
@@ -24,7 +28,50 @@ interface UserProfileMainContent extends BoxProps {
 const UserProfileMainContent = ({ user, ...props }: UserProfileMainContent) => {
   const isLaptop = useMediaQuery(theme.breakpoints.up("xl"));
   const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
-  if (!user || !user.name) {
+  const { user: currentUser } = useUser();
+  const { isOpen, onClose, onToggle } = useEditProfileModal();
+  const { mutate: follow, isLoading: isFollowLoading } = useFollow();
+  const { mutate: unfollow, isLoading: isUnfollowLoading } = useUnfollow();
+
+  const [isFollowing, setIsFollowing] = useState(
+    user.followers?.length &&
+      user.followers.some((f) => f?.user_id === currentUser?.id)
+  );
+
+  const handleFollow = () => {
+    if (user.id) {
+      if (!isFollowing) {
+        follow(user.id, {
+          onSuccess: () => {
+            setIsFollowing(true);
+            toast.success("Follow user");
+          },
+        });
+      } else {
+        unfollow(user.id, {
+          onSuccess: () => {
+            setIsFollowing(false);
+            toast.success("Unfollow user");
+          },
+        });
+      }
+    }
+  };
+
+  console.log(user);
+
+  const isAuthor = useMemo(() => {
+    return user?.id + "" === currentUser?.id + "";
+  }, [currentUser?.id, user?.id]);
+
+  useEffect(() => {
+    setIsFollowing(
+      user.followers?.length &&
+        user.followers.some((f) => f?.user_id === currentUser?.id)
+    );
+  }, [currentUser?.id, user.followers]);
+
+  if (!user || !user.name || !currentUser) {
     return null;
   }
 
@@ -71,14 +118,40 @@ const UserProfileMainContent = ({ user, ...props }: UserProfileMainContent) => {
           <Typography pl={12} ml={3} variant="title2">
             {user.name}
           </Typography>
-          <Button
-            startIcon={<EditIcon />}
-            size="small"
-            color="primary"
-            variant="contained"
-          >
-            Edit profile
-          </Button>
+          {isAuthor && (
+            <Button
+              startIcon={<EditIcon />}
+              size="small"
+              color="primary"
+              variant="contained"
+              onClick={onToggle}
+            >
+              Edit profile
+            </Button>
+          )}
+          {!isAuthor && isFollowing && (
+            <Button
+              startIcon={<CheckIcon />}
+              size="small"
+              color="primary"
+              variant="contained"
+              disabled={isUnfollowLoading}
+              onClick={handleFollow}
+            >
+              Following
+            </Button>
+          )}
+          {!isAuthor && !isFollowing && (
+            <Button
+              size="small"
+              color="primary"
+              variant="contained"
+              disabled={isFollowLoading}
+              onClick={handleFollow}
+            >
+              Follow
+            </Button>
+          )}
         </Box>
       </Box>
 
@@ -99,8 +172,10 @@ const UserProfileMainContent = ({ user, ...props }: UserProfileMainContent) => {
             <Post key={post.id} {...post} />
           ))}
       </Box>
+
+      <EditProfileModal user={currentUser} open={isOpen} onClose={onClose} />
     </Box>
   );
 };
 
-export default UserProfileMainContent;
+export default memo(UserProfileMainContent);

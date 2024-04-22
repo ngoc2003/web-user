@@ -64,14 +64,15 @@ const Post = (props: ExtendedPostType) => {
     setAnchorEl(null);
   };
 
-  const handleDeletePost = () => {
+  const handleDeletePost = useCallback(() => {
     deletePost(props.id, {
       onSuccess: () => {
         toast.success("Delete successfully.");
         window.location.reload();
       },
     });
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.id]);
 
   const handleRefreshCommentList = useCallback(
     (comment: CommentType) => {
@@ -107,7 +108,7 @@ const Post = (props: ExtendedPostType) => {
     );
     numberOfComment.current =
       numberOfComment.current + NUMBER_OF_COMMENTS_WILL_LOAD_MORE;
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.comments.length]);
 
   if (!user || !props.user) return;
@@ -130,7 +131,7 @@ const Post = (props: ExtendedPostType) => {
           sx={{ cursor: "pointer" }}
           ml={2}
           flex={1}
-          onClick={() => router.push("/user/" + user.id)}
+          onClick={() => router.push("/user/" + props.user.id)}
         >
           <Typography fontWeight={600}>{props.user.name}</Typography>
           <Typography color={theme.palette.grey[600]}>

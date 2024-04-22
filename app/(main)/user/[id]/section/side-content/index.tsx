@@ -132,7 +132,7 @@ const SideContent = ({
         py={2}
         borderRadius={2}
         display="flex"
-        overflow="scroll"
+        sx={{ overflowX: "scroll" }}
       >
         {!!pets?.length ? (
           pets.map((pet) => (
