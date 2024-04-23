@@ -215,12 +215,12 @@ const CreatePetModal = forwardRef<any, Omit<PCModalProps, "children">>(
                   fullWidth
                   label="Breed"
                   options={
-                    watch("type")
+                    watch("type") && petsByType[watch("type")]
                       ? petsByType[watch("type")].map((item) => ({
                           value: item.id,
                           label: capitalize(item.name),
                         }))
-                      : petsByType
+                      : petsByType && Object.keys(petsByType).length > 0
                       ? petsByType[Object.keys(petsByType)[0]].map((item) => ({
                           value: item.id,
                           label: capitalize(item.name),

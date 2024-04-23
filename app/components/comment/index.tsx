@@ -41,11 +41,11 @@ const Comment = ({ data, id, isLike }: CommentProps) => {
   };
 
   return (
-    <Box display="flex" gap={2} mt={2}>
+    <Box display="flex" mt={2}>
       <Avatar sx={{ bgcolor: theme.palette.primary.light }}>
         {data.user.name.charAt(0)}
       </Avatar>
-      <Box flex={1}>
+      <Box pl={2} flex={1}>
         <Box
           py={1}
           px={1.5}
@@ -64,7 +64,7 @@ const Comment = ({ data, id, isLike }: CommentProps) => {
           </Typography>
           <Typography>{data.content}</Typography>
         </Box>
-        <Box display="flex" gap={2} mt={0.5} ml={1}>
+        <Box display="flex" mt={0.5} ml={1}>
           <Typography color={theme.palette.grey[600]}>
             {formatDistance(new Date(data.created_at), new Date(), {
               addSuffix: true,
@@ -73,7 +73,7 @@ const Comment = ({ data, id, isLike }: CommentProps) => {
           <Typography
             color={like ? theme.palette.primary.main : theme.palette.grey[600]}
             fontWeight={600}
-            sx={{ cursor: "pointer" }}
+            sx={{ cursor: "pointer", ml: 2 }}
             onClick={
               isLikeCommentLoading || isUnlikeCommentLoading
                 ? undefined
@@ -84,12 +84,20 @@ const Comment = ({ data, id, isLike }: CommentProps) => {
           >
             Like
           </Typography>
-          {/* <Typography color={theme.palette.grey[600]} fontWeight={600}>
-            Reply
+          <Typography
+            sx={{ cursor: "pointer", ml: 2 }}
+            color={theme.palette.grey[600]}
+            fontWeight={600}
+          >
+            Edit
           </Typography>
-          <Typography color={theme.palette.grey[600]} fontWeight={600}>
-            Share
-          </Typography> */}
+          <Typography
+            sx={{ cursor: "pointer", ml: 2 }}
+            color={theme.palette.grey[600]}
+            fontWeight={600}
+          >
+            Delete
+          </Typography>
         </Box>
       </Box>
     </Box>

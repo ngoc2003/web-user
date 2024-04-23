@@ -16,10 +16,10 @@ const ConfirmModal = ({
 }: ConfirmModalProps) => {
   return (
     <PCModal {...props}>
-      <Box display="flex" gap={2}>
+      <Box display="flex">
         <Button
           onClick={() => props.onClose?.({}, "escapeKeyDown")}
-          sx={{ mt: 2 }}
+          sx={{ mt: 2, mr: 2 }}
           fullWidth
         >
           Cancel

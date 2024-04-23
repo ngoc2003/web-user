@@ -54,7 +54,11 @@ const PCImageSlider = ({
         >
           <CloseIcon />
         </IconButton>
-        <Box sx={{ position: "relative", width: "100%", maxWidth: 500 }}>
+        <Box
+          sx={{
+            position: "relative",
+          }}
+        >
           <IconButton
             onClick={handleBack}
             sx={{
@@ -67,15 +71,23 @@ const PCImageSlider = ({
           >
             <ArrowBackIosNewIcon />
           </IconButton>
-          <Image
-            src={images[currentImageIndex].link}
-            alt={`Image ${currentImageIndex + 1} of ${images.length}`}
-            width={500}
-            height={500}
-            layout="intrinsic"
-            sizes="100vw"
-            style={{ width: "100%", height: "auto", display: "block" }}
-          />
+          <Box borderRadius={2} sx={{ overflow: "hidden" }}>
+            <Image
+              src={images[currentImageIndex].link}
+              alt={`Image ${currentImageIndex + 1} of ${images.length}`}
+              width={0}
+              height={0}
+              layout="intrinsic"
+              sizes="100vw"
+              style={{
+                width: "auto",
+                height: "100%",
+                maxHeight: "90vh",
+                display: "block",
+              }}
+              objectFit="contain"
+            />
+          </Box>
           <IconButton
             onClick={handleNext}
             sx={{

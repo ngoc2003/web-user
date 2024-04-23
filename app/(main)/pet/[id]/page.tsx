@@ -41,6 +41,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import UpdatePetBasicInformation from "@/app/components/modal/UpdatePetBasicInformation";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -72,6 +73,8 @@ const PetProfilePage = () => {
     createDewormHistory: false,
     createVaccinationHistory: false,
     createWeightHistory: false,
+
+    editBasicInformation: true,
   });
 
   const handleDeleteAllergy = () => {
@@ -127,9 +130,24 @@ const PetProfilePage = () => {
   return (
     <>
       <Box width="100%" sx={{ overflowY: "auto" }}>
-        {/* <Typography variant="h4" color="primary" m={2} mt={0}>
-          {data.name}&apos;s profile
-        </Typography> */}
+        <Box display="flex" justifyContent="space-between">
+          <Typography variant="h6" mb={2}>
+            {data.name}&apos;s profile
+          </Typography>
+          {isAuthor && (
+            <Button
+              onClick={() =>
+                setModalState((prev) => ({
+                  ...prev,
+                  editBasicInformation: true,
+                }))
+              }
+              sx={{ color: theme.palette.primary.main }}
+            >
+              Edit
+            </Button>
+          )}
+        </Box>
         <Box
           p={2}
           bgcolor={theme.palette.common.white}
@@ -227,9 +245,14 @@ const PetProfilePage = () => {
           </Box>
         </Box>
 
-        <Typography variant="h6" m={2}>
-          Characteristic
-        </Typography>
+        <Box display="flex" justifyContent="space-between">
+          <Typography variant="h6" m={2}>
+            Characteristic
+          </Typography>
+          {isAuthor && (
+            <Button sx={{ color: theme.palette.primary.main }}>Edit</Button>
+          )}
+        </Box>
 
         <Box
           display="flex"
@@ -465,6 +488,24 @@ const PetProfilePage = () => {
         title="Are you sure want to delete this allergy?"
         onClose={() => {
           setModalState((prev) => ({ ...prev, deleteAllergies: false }));
+        }}
+      />
+
+      <UpdatePetBasicInformation
+        refetch={refetch}
+        open={modalState.editBasicInformation}
+        handleSubmit={() => {}}
+        data={{
+          id: data.id,
+          image: data.image,
+          name: data.name,
+          birthday: data.birthday,
+          sex: data.sex,
+          description: data.description,
+          pet_type_id: data.pet_type_id,
+        }}
+        onClose={() => {
+          setModalState((prev) => ({ ...prev, editBasicInformation: false }));
         }}
       />
     </>

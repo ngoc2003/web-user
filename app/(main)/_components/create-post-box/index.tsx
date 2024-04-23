@@ -9,7 +9,6 @@ import {
   Avatar,
   Box,
   Button,
-  Chip,
   Divider,
   Icon,
   Typography,
@@ -79,13 +78,14 @@ const CreatePostBox = () => {
         <>
           <Divider sx={{ mt: 3, mb: 1.5 }} />
 
-          <Box display="flex" gap={1} justifyContent="between">
+          <Box display="flex" justifyContent="between">
             {BUTTON_ACTIONS.map((btn) => (
               <Button
                 key={btn.label}
                 variant="text"
                 fullWidth
                 onClick={btn.onClick}
+                sx={{ mx: 1 }}
               >
                 <Icon>
                   <Image src={btn.url} width={24} height={24} alt="camera" />

@@ -12,12 +12,16 @@ const MainContent = (props: MainContentProps) => {
     offset: 0,
   });
 
-  if (isError) return <>Error</>;
-
   return (
     <Box sx={{ px: 3, overflowY: "scroll", pb: 3, ...props?.sx }}>
-      <CreatePostBox />
-      <PostList data={data} isFetching={isFetching} />
+      {isError ? (
+        <>Error</>
+      ) : (
+        <>
+          <CreatePostBox />
+          <PostList data={data} isFetching={isFetching} />
+        </>
+      )}
     </Box>
   );
 };

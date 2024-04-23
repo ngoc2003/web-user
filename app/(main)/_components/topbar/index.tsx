@@ -60,14 +60,13 @@ const Topbar = () => {
         )}
 
         <Box
-          gap={4}
           flex={1}
           display="flex"
           justifyContent="right"
           alignItems="center"
         >
           <SearchBox />
-          <IconButton>
+          <IconButton sx={{ mx: 4 }}>
             <Image
               alt="notification"
               src="/icons/notification.svg"
