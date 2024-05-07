@@ -33,6 +33,7 @@ import {
 } from "@/app/types/user";
 import Image from "next/image";
 import PCImageSlider from "../image-slider";
+import { useCountries } from "@/app/hooks/useCountries";
 
 const NUMBER_OF_COMMENTS_WILL_LOAD_MORE = 5;
 
@@ -45,6 +46,7 @@ const Post = (props: ExtendedPostType) => {
   const open = !!anchorEl;
   const updatePost = useUpdatePostModal();
   const { mutate: deletePost } = useDeletePost();
+  const { getByLatAndLon } = useCountries();
 
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -136,7 +138,24 @@ const Post = (props: ExtendedPostType) => {
           flex={1}
           onClick={() => router.push("/user/" + props.user.id)}
         >
-          <Typography fontWeight={600}>{props.user.name}</Typography>
+          <Typography fontWeight={600}>
+            {props.user.name}
+            {!!props.latitude &&
+              !!props.longitude &&
+              getByLatAndLon([props.latitude, props.longitude]) && (
+                <Typography
+                  sx={{ display: "inline" }}
+                  color={theme.palette.grey[600]}
+                  fontWeight={400}
+                >
+                  {" "}
+                  is in{" "}
+                  <Typography sx={{ display: "inline" }} fontWeight={600}>
+                    {getByLatAndLon([props.latitude, props.longitude])?.label}
+                  </Typography>
+                </Typography>
+              )}
+          </Typography>
           <Typography color={theme.palette.grey[600]}>
             {formatDistance(new Date(props.created_at), new Date(), {
               addSuffix: true,

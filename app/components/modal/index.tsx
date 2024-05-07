@@ -12,13 +12,14 @@ import React from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import * as Styles from "./modal.styles";
 import { theme } from "@/app/theme";
-
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 export interface PCModalProps extends ModalProps {
   containerProps?: BoxProps;
   disabledCloseButton?: boolean;
+  onBack?: () => void;
 }
 
-const PCModal = ({ containerProps, title, ...props }: PCModalProps) => {
+const PCModal = ({ onBack, containerProps, title, ...props }: PCModalProps) => {
   return (
     <Modal {...props}>
       <Styles.ModalContainer
@@ -38,6 +39,13 @@ const PCModal = ({ containerProps, title, ...props }: PCModalProps) => {
           alignItems="center"
           width="100%"
         >
+          {!!onBack && (
+            <Box position="absolute" sx={{ left: 18 }}>
+              <IconButton size="small" onClick={onBack}>
+                <ArrowBackIosIcon />
+              </IconButton>
+            </Box>
+          )}
           <Typography variant="title3">{title}</Typography>
           {!props?.disabledCloseButton && (
             <Box position="absolute" sx={{ right: 18 }}>

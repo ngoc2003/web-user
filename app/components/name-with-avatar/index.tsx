@@ -3,13 +3,14 @@
 import { theme } from "@/app/theme";
 import { Avatar, Box, BoxProps, Typography } from "@mui/material";
 import { omit } from "lodash";
-import React from "react";
+import React, { ReactNode } from "react";
 
 interface NameWithAvatarProps extends BoxProps {
   name: string;
+  subText?: string | ReactNode;
 }
 
-const NameWithAvatar = ({ name, ...props }: NameWithAvatarProps) => {
+const NameWithAvatar = ({ name, subText, ...props }: NameWithAvatarProps) => {
   return (
     <Box
       sx={{ cursor: "pointer", ...props?.sx }}
@@ -22,9 +23,16 @@ const NameWithAvatar = ({ name, ...props }: NameWithAvatarProps) => {
       <Avatar sx={{ bgcolor: theme.palette.primary.light }}>
         {name.charAt(0)}
       </Avatar>
-      <Typography ml={1.5} fontWeight={600}>
-        {name}
-      </Typography>
+      <Box display="flex">
+        <Typography mx={1.5} fontWeight={600}>
+          {name}
+        </Typography>
+        {!!subText && (
+          <Typography mr={1.5} fontWeight={400} color={theme.palette.grey[600]}>
+            {subText}
+          </Typography>
+        )}
+      </Box>
     </Box>
   );
 };

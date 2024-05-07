@@ -12,6 +12,7 @@ import { useUpdatePostModal } from "@/app/hooks/useUpdatePostModal";
 import { useUploadImage } from "@/app/hooks/useUploadImage";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useUser } from "@/app/hooks/useUser";
+import { useCountries } from "@/app/hooks/useCountries";
 
 const UpdatePostModal = (props: Omit<PCModalProps, "children">) => {
   const { user } = useUser();
@@ -22,7 +23,13 @@ const UpdatePostModal = (props: Omit<PCModalProps, "children">) => {
   const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
   const [newImages, setNewImages] = useState<File[]>([]);
   const imageInputRef = useRef<HTMLInputElement | null>(null);
+  const [locationValue, setLocationValue] = useState<{
+    name?: string;
+    lat?: number;
+    lon?: number;
+  }>({});
 
+  const { getByLatAndLon } = useCountries();
   const [images, setImages] = useState<string[]>([]);
 
   const handleUpdatePost = async () => {
@@ -48,7 +55,10 @@ const UpdatePostModal = (props: Omit<PCModalProps, "children">) => {
       mutate(
         {
           id: updatePost.data.id,
-          data: { content: inputValue, images: updatedImages },
+          data: {
+            content: inputValue,
+            images: updatedImages,
+          },
         },
         {
           onSuccess: () => {
@@ -72,7 +82,6 @@ const UpdatePostModal = (props: Omit<PCModalProps, "children">) => {
     ]);
     setNewImages((prev) => [...prev, ...files]);
   };
-  
 
   const handleDeleteImage = (imageId: string) => {
     setImages((prev) => prev.filter((img) => img !== imageId));
@@ -88,14 +97,47 @@ const UpdatePostModal = (props: Omit<PCModalProps, "children">) => {
     if (updatePost.data?.images && updatePost.data.images?.length) {
       setImages(updatePost.data?.images.map((img) => img.link));
     }
-  }, [updatePost.data?.content, updatePost.data?.images]);
+    if (updatePost.data?.latitude && updatePost.data.longitude) {
+      const data = getByLatAndLon([
+        updatePost.data.latitude,
+        updatePost.data.longitude,
+      ]);
+      if (data) {
+        setLocationValue({
+          name: data.label,
+          lat: data.latlng[0],
+          lon: data.latlng[1],
+        });
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    updatePost.data?.content,
+    updatePost.data?.images,
+    updatePost.data?.latitude,
+    updatePost.data?.longitude,
+  ]);
 
   if (!user?.name || !updatePost.data) return null;
 
   return (
     <PCModal title="Update your post" {...props}>
       <>
-        <NameWithAvatar name={user.name} />
+        <NameWithAvatar
+          name={user.name}
+          subText={
+            !!locationValue.name ? (
+              <>
+                is in{" "}
+                <Typography sx={{ display: "inline" }} fontWeight={600}>
+                  {locationValue.name}
+                </Typography>
+              </>
+            ) : (
+              ""
+            )
+          }
+        />
         <Box>
           <PCTextField
             onChange={(e) => setInputValue(e.target.value)}

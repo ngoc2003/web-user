@@ -3,6 +3,7 @@
 import CreatePostModal from "@/app/components/modal/CreatePostModal";
 import PCTextField from "@/app/components/textfield";
 import { useCreatePostModal } from "@/app/hooks/useCreatePostModal";
+import { useMapModal } from "@/app/hooks/useMapModal";
 import { useUser } from "@/app/hooks/useUser";
 import { theme } from "@/app/theme";
 import {
@@ -21,6 +22,7 @@ const CreatePostBox = () => {
   const { user } = useUser();
   const createPostModal = useCreatePostModal();
   const isMiniMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const { onToggle: mapModalToggle } = useMapModal();
 
   const createPostModalRef = useRef<any>();
 
@@ -46,7 +48,7 @@ const CreatePostBox = () => {
       {
         label: "Check-in",
         url: "/icons/mapPin.svg",
-        onClick: () => {},
+        onClick: mapModalToggle,
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
