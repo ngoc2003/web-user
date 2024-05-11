@@ -34,6 +34,7 @@ import {
 import Image from "next/image";
 import PCImageSlider from "../image-slider";
 import { useCountries } from "@/app/hooks/useCountries";
+import Link from "next/link";
 
 const NUMBER_OF_COMMENTS_WILL_LOAD_MORE = 5;
 
@@ -58,6 +59,11 @@ const Post = (props: ExtendedPostType) => {
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
+  };
+
+  const handleDeleteComment = (id: number) => {
+    setComments((prev) => prev.filter((comment) => comment.id !== id));
+    toast.success("Delete comment success!");
   };
 
   const handleFocusInputComment = () => {
@@ -140,10 +146,11 @@ const Post = (props: ExtendedPostType) => {
           borderRadius={2}
           ml={2}
           flex={1}
-          onClick={() => router.push("/user/" + props.user.id)}
         >
           <Typography fontWeight={600}>
-            {props.user.name}
+            <span onClick={() => router.push("/user/" + props.user.id)}>
+              {props.user.name}
+            </span>
             {!!props.latitude &&
               !!props.longitude &&
               getByLatAndLon([props.latitude, props.longitude]) && (
@@ -154,9 +161,26 @@ const Post = (props: ExtendedPostType) => {
                 >
                   {" "}
                   is in{" "}
-                  <Typography sx={{ display: "inline" }} fontWeight={600}>
-                    {getByLatAndLon([props.latitude, props.longitude])?.label}
-                  </Typography>
+                  <Link
+                    href={
+                      "https://www.google.com/maps/@" +
+                      props.latitude +
+                      "," +
+                      props.longitude +
+                      ",15z?entry=ttu"
+                    }
+                    passHref
+                    target="_blank"
+                    style={{ textDecoration: "none" }}
+                  >
+                    <Typography
+                      sx={{ display: "inline" }}
+                      fontWeight={600}
+                      color={theme.palette.grey[600]}
+                    >
+                      {getByLatAndLon([props.latitude, props.longitude])?.label}
+                    </Typography>
+                  </Link>
                 </Typography>
               )}
           </Typography>
@@ -298,9 +322,10 @@ const Post = (props: ExtendedPostType) => {
           {comments?.map((comment) => (
             <Comment
               key={comment.id}
-              id={comment.id}
+              id={user.id}
               data={comment}
               isLike={comment.likes.some((like) => +like.user_id === +user.id)}
+              handleDeleteComment={handleDeleteComment}
             />
           ))}
         </Box>

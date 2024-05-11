@@ -15,7 +15,7 @@ const PostDetail = () => {
   if (isFetching) return <Loading />;
 
   return (
-    <Box flex={1} maxWidth={800}>
+    <Box sx={{ overflowY: "scroll" }} flex={1} maxWidth={800}>
       {!data ? <></> : <Post {...data} />}
     </Box>
   );
