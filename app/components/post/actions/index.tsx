@@ -9,6 +9,7 @@ import TextsmsRoundedIcon from "@mui/icons-material/TextsmsRounded";
 import ShareRoundedIcon from "@mui/icons-material/ShareRounded";
 import { theme } from "@/app/theme";
 import { LikePostType } from "@/app/types/user";
+import { usePathname, useRouter } from "next/navigation";
 
 interface ActionsProps {
   handleFocusInputComment: () => void;
@@ -16,6 +17,11 @@ interface ActionsProps {
   id: number;
   userId: number;
 }
+
+const copyText = (entryText: string) => {
+  navigator.clipboard.writeText(entryText);
+  toast.success("Copied to clipboard!");
+};
 
 const Actions = ({
   handleFocusInputComment,
@@ -67,7 +73,9 @@ const Actions = ({
         label: "Share",
         icon: ShareRoundedIcon,
         color: "default",
-        onClick: () => {},
+        onClick: () => {
+          copyText("pet-connect.website" + "/post/" + id);
+        },
         loading: false,
       },
     ],
