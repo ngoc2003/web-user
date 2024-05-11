@@ -23,15 +23,15 @@ import SendIcon from "@mui/icons-material/Send";
 import { useAddPost } from "@/app/services/post";
 import toast from "react-hot-toast";
 import { useUploadImage } from "@/app/hooks/useUploadImage";
-import { useRouter } from "next/navigation";
 import MapModal from "./MapModal";
 import { useMapModal } from "@/app/hooks/useMapModal";
 import { useCreatePostModal } from "@/app/hooks/useCreatePostModal";
+import { PCIconPicker } from "../icon-picker";
+import { debounce } from "lodash";
 
 const CreatePostModal = forwardRef<any, Omit<PCModalProps, "children">>(
   ({ ...props }, ref) => {
     const { user } = useUser();
-    const router = useRouter();
     const { mutate, isLoading } = useAddPost();
     const [inputValue, setInputValue] = useState<string>("");
     const [locationValue, setLocationValue] = useState({
@@ -105,6 +105,10 @@ const CreatePostModal = forwardRef<any, Omit<PCModalProps, "children">>(
       );
     };
 
+    const handleTextChange = (text: string) => {
+      setInputValue(text);
+    };
+
     if (!user?.name) return null;
 
     return (
@@ -129,8 +133,9 @@ const CreatePostModal = forwardRef<any, Omit<PCModalProps, "children">>(
             <Box>
               <PCTextField
                 onChange={(e) => {
-                  setInputValue(e.target.value);
+                  handleTextChange(e.target.value as any);
                 }}
+                value={inputValue}
                 fullWidth
                 multiline
                 rows={6}
@@ -198,6 +203,12 @@ const CreatePostModal = forwardRef<any, Omit<PCModalProps, "children">>(
                     height={24}
                   />
                 </IconButton>
+                <PCIconPicker
+                  onChange={(icon: string) => {
+                    handleTextChange(inputValue + icon);
+                  }}
+                />
+
                 <IconButton
                   onClick={() => {
                     onToggle();

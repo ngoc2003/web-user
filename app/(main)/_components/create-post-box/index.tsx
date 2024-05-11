@@ -43,7 +43,9 @@ const CreatePostBox = ({ refetch }: { refetch?: () => void }) => {
       {
         label: "Your feeling",
         url: "/icons/faceSmile.svg",
-        onClick: () => {},
+        onClick: () => {
+          createPostModal.onToggle();
+        },
       },
       {
         label: "Check-in",

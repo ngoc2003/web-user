@@ -13,6 +13,7 @@ import { useUploadImage } from "@/app/hooks/useUploadImage";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useUser } from "@/app/hooks/useUser";
 import { useCountries } from "@/app/hooks/useCountries";
+import { PCIconPicker } from "../icon-picker";
 
 const UpdatePostModal = (props: Omit<PCModalProps, "children">) => {
   const { user } = useUser();
@@ -206,6 +207,11 @@ const UpdatePostModal = (props: Omit<PCModalProps, "children">) => {
                 height={24}
               />
             </IconButton>
+            <PCIconPicker
+              onChange={(icon: string) => {
+                setInputValue((prev) => prev + icon);
+              }}
+            />
           </Box>
         </Box>
 
