@@ -76,7 +76,7 @@ const Post = (props: ExtendedPostType) => {
       },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.id]);
+  }, [props?.id]);
 
   const handleRefreshCommentList = useCallback(
     (comment: CommentType) => {
@@ -95,7 +95,11 @@ const Post = (props: ExtendedPostType) => {
   );
 
   const handleLoadMoreComment = useCallback(() => {
-    if (numberOfComment.current >= props.comments.length) return;
+    if (
+      !props.comments?.length ||
+      numberOfComment.current >= props.comments?.length
+    )
+      return;
     const numberCommentCanIncrease =
       props.comments.length - numberOfComment.current;
 
@@ -113,7 +117,7 @@ const Post = (props: ExtendedPostType) => {
     numberOfComment.current =
       numberOfComment.current + NUMBER_OF_COMMENTS_WILL_LOAD_MORE;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.comments.length]);
+  }, [props?.comments?.length]);
 
   if (!user || !props.user) return;
 

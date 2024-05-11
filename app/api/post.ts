@@ -21,6 +21,10 @@ export interface UpdatePostBody {
   data: AddPostBody;
 }
 
+export const getPostById = async (id: number) => {
+  return PCConnectionInstance.get("/post/" + id);
+};
+
 export const getListPost = async (params: ListPostParams) => {
   return PCConnectionInstance.get("/posts", { params });
 };

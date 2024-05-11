@@ -7,7 +7,7 @@ import PostList from "@/app/components/post-list";
 interface MainContentProps extends BoxProps {}
 
 const MainContent = (props: MainContentProps) => {
-  const { data, isFetching, isError } = useListPost({
+  const { data, isFetching, isError, refetch } = useListPost({
     limit: 20,
     offset: 0,
   });
@@ -18,7 +18,11 @@ const MainContent = (props: MainContentProps) => {
         <>Error</>
       ) : (
         <>
-          <CreatePostBox />
+          <CreatePostBox
+            refetch={() => {
+              refetch();
+            }}
+          />
           <PostList data={data} isFetching={isFetching} />
         </>
       )}

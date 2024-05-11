@@ -100,7 +100,6 @@ const CreatePostModal = forwardRef<any, Omit<PCModalProps, "children">>(
           onSuccess: () => {
             toast.success("Create post successfully.");
             props.onClose?.({}, "escapeKeyDown");
-            window.location.reload();
           },
         }
       );

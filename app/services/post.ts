@@ -4,6 +4,7 @@ import {
   addPost,
   deletePost,
   getListPost,
+  getPostById,
   likePost,
   unlikePost,
   updatePost,
@@ -29,6 +30,11 @@ export const useDeletePost = () =>
 
 export const useListPost = (params: ListPostParams) =>
   useQuery(["posts"], () => getListPost(params), {
+    select: ({ data }) => data,
+  });
+
+export const useGetPostById = (id: number) =>
+  useQuery(["post", id], () => getPostById(id), {
     select: ({ data }) => data,
   });
 

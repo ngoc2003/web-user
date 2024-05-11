@@ -18,7 +18,7 @@ import {
 import Image from "next/image";
 import React, { useMemo, useRef } from "react";
 
-const CreatePostBox = () => {
+const CreatePostBox = ({ refetch }: { refetch?: () => void }) => {
   const { user } = useUser();
   const createPostModal = useCreatePostModal();
   const isMiniMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -122,7 +122,10 @@ const CreatePostBox = () => {
       )}
       <CreatePostModal
         ref={createPostModalRef}
-        onClose={() => createPostModal.onClose()}
+        onClose={() => {
+          createPostModal.onClose();
+          refetch?.();
+        }}
         open={createPostModal.isOpen}
       />
     </Box>

@@ -5,7 +5,12 @@ import React from "react";
 
 const Loading = () => {
   return (
-    <Box display="grid" sx={{ placeItems: "center" }} minHeight="100vh">
+    <Box
+      display="grid"
+      sx={{ placeItems: "center" }}
+      minHeight="100vh"
+      width="100%"
+    >
       <CircularProgress />
     </Box>
   );
