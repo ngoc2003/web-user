@@ -6,6 +6,7 @@ import {
   Box,
   BoxProps,
   Button,
+  IconButton,
   Typography,
   useMediaQuery,
 } from "@mui/material";
@@ -18,6 +19,7 @@ import Post from "@/app/components/post";
 import SideContent from "../side-content";
 import { useEditProfileModal } from "@/app/hooks/useEditProfileModal";
 import EditProfileModal from "@/app/components/modal/EditProfileModal";
+import TuneRoundedIcon from "@mui/icons-material/TuneRounded";
 import CheckIcon from "@mui/icons-material/Check";
 import { useFollow, useUnfollow } from "@/app/services/follow";
 import toast from "react-hot-toast";
@@ -154,6 +156,29 @@ const UserProfileMainContent = ({ user, ...props }: UserProfileMainContent) => {
       </Box>
 
       <CreatePostBox />
+
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        width="100%"
+        mt={3}
+        bgcolor={theme.palette.common.white}
+        borderRadius={1.5}
+        px={2}
+        py={1}
+        boxShadow="0 1px 1px rgba(0,0,0,0.25)"
+      >
+        <Typography fontWeight={600}>Posts</Typography>
+        <Box>
+          <Button
+            sx={{ bgcolor: theme.palette.grey[200] }}
+            endIcon={<TuneRoundedIcon />}
+          >
+            Filter
+          </Button>
+        </Box>
+      </Box>
 
       {isMobile && (
         <SideContent

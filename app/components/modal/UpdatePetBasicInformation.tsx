@@ -1,4 +1,4 @@
-import React, { forwardRef, useMemo, useRef, useState } from "react";
+import React, { forwardRef, memo, useMemo, useRef, useState } from "react";
 import PCModal, { PCModalProps } from ".";
 import { useUser } from "@/app/hooks/useUser";
 import {
@@ -310,4 +310,4 @@ const UpdatePetBasicInformation = forwardRef<
 
 UpdatePetBasicInformation.displayName = "UpdatePetBasicInformation";
 
-export default UpdatePetBasicInformation;
+export default memo(UpdatePetBasicInformation);

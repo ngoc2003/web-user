@@ -1,7 +1,9 @@
 "use client";
+import ConfirmModal from "@/app/components/modal/ConfirmModal";
 import CreatePetModal from "@/app/components/modal/CreatePetModal";
 import EditProfileModal from "@/app/components/modal/EditProfileModal";
 import UpdatePostModal from "@/app/components/modal/UpdatePostModal";
+import { useConfirmModal } from "@/app/hooks/useConfirmModal";
 import { useCreatePetModal } from "@/app/hooks/useCreatePetModal";
 import { useEditProfileModal } from "@/app/hooks/useEditProfileModal";
 import { useUpdatePostModal } from "@/app/hooks/useUpdatePostModal";
@@ -10,10 +12,10 @@ import React from "react";
 
 const ModalProvider = () => {
   const { user: currentUser } = useUser();
-  const { isOpen, onClose } = useCreatePetModal();
-  const { isOpen: isOpenEditProfileModal, onClose: onCloseEditProfileModal } =
-    useEditProfileModal();
-  const updatePost = useUpdatePostModal();
+  const createPetModal = useCreatePetModal();
+  const editProfileModal = useEditProfileModal();
+  const updatePostModal = useUpdatePostModal();
+  const confirmModal = useConfirmModal();
 
   if (!currentUser) {
     return null;
@@ -21,15 +23,25 @@ const ModalProvider = () => {
 
   return (
     <>
-      <CreatePetModal open={isOpen} onClose={onClose} />
+      <ConfirmModal
+        isLoading={confirmModal.state.isLoading}
+        open={confirmModal.state.isOpen}
+        handleSubmit={confirmModal.handleConfirm}
+        title={confirmModal.state.title}
+        onClose={confirmModal.onClose}
+      />
+      <CreatePetModal
+        open={createPetModal.isOpen}
+        onClose={createPetModal.onClose}
+      />
       <EditProfileModal
         user={currentUser}
-        open={isOpenEditProfileModal}
-        onClose={onCloseEditProfileModal}
+        open={editProfileModal.isOpen}
+        onClose={editProfileModal.onClose}
       />
       <UpdatePostModal
-        onClose={() => updatePost.onClose()}
-        open={updatePost.isOpen}
+        open={updatePostModal.isOpen}
+        onClose={updatePostModal.onClose}
       />
     </>
   );

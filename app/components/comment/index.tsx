@@ -11,7 +11,7 @@ import { ExtendedCommentType } from "@/app/types/user";
 import { Avatar, Box, Typography } from "@mui/material";
 import { formatDistance } from "date-fns";
 import { useRouter } from "next/navigation";
-import React, { useLayoutEffect, useState } from "react";
+import React, { memo, useLayoutEffect, useState } from "react";
 import toast from "react-hot-toast";
 import PCTextField from "../textfield";
 
@@ -36,7 +36,7 @@ const Comment = ({ data, id, isLike, handleDeleteComment }: CommentProps) => {
   const { mutate: updateComment } = useUpdateComment();
 
   const handleLike = () => {
-    likeComment(id, {
+    likeComment(data.id, {
       onSuccess: () => {
         toast.success("Like successfully.");
         setLike(true);
@@ -44,7 +44,7 @@ const Comment = ({ data, id, isLike, handleDeleteComment }: CommentProps) => {
     });
   };
   const handleUnlike = () => {
-    unlikeComment(id, {
+    unlikeComment(data.id, {
       onSuccess: () => {
         toast.success("Unlike successfully.");
         setLike(false);
@@ -76,7 +76,8 @@ const Comment = ({ data, id, isLike, handleDeleteComment }: CommentProps) => {
     if (data?.content) {
       setInputValue(data.content);
     }
-  }, [data?.content]);
+    setLike(isLike);
+  }, [data?.content, isLike]);
   return (
     <>
       {!isEdit ? (
@@ -222,4 +223,4 @@ const Comment = ({ data, id, isLike, handleDeleteComment }: CommentProps) => {
   );
 };
 
-export default Comment;
+export default memo(Comment);

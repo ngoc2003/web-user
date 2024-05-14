@@ -5,7 +5,7 @@ import { theme } from "@/app/theme";
 import { Box, Button, IconButton, Typography } from "@mui/material";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import MaleIcon from "@mui/icons-material/Male";
 import PetsIcon from "@mui/icons-material/Pets";
 import FemaleIcon from "@mui/icons-material/Female";
@@ -19,7 +19,6 @@ import WbIncandescentIcon from "@mui/icons-material/WbIncandescent";
 import PCNotFoundData from "@/app/components/notFoundData";
 import CreateAllergyModal from "@/app/components/modal/CreateAllergyModal";
 import { Close } from "@mui/icons-material";
-import ConfirmModal from "@/app/components/modal/ConfirmModal";
 import { useDeleteAllergy } from "@/app/services/allergy";
 import toast from "react-hot-toast";
 import RightSidebar from "../../home/section/right-sidebar";
@@ -42,6 +41,7 @@ import {
   Legend,
 } from "chart.js";
 import UpdatePetBasicInformation from "@/app/components/modal/UpdatePetBasicInformation";
+import { useConfirmModal } from "@/app/hooks/useConfirmModal";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -65,11 +65,8 @@ const PetProfilePage = () => {
   const { mutate: deleteAllergy, isLoading: deleteAllergyLoading } =
     useDeleteAllergy();
 
-  const [idToDelete, setIdToDelete] = useState<number | null>(null);
-
   const [modalState, setModalState] = useState({
     createAllergies: false,
-    deleteAllergies: false,
     createDewormHistory: false,
     createVaccinationHistory: false,
     createWeightHistory: false,
@@ -77,16 +74,19 @@ const PetProfilePage = () => {
     editBasicInformation: true,
   });
 
-  const handleDeleteAllergy = () => {
+  const confirmModal = useConfirmModal();
+
+  const handleDeleteAllergy = useCallback((idToDelete: number) => {
     if (!idToDelete) return;
     deleteAllergy(idToDelete, {
       onSuccess: () => {
         toast.success("Allergy delete successfully.");
         refetch();
-        setModalState((prev) => ({ ...prev, deleteAllergies: false }));
+        confirmModal.onClose();
       },
     });
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!data) return;
 
@@ -311,11 +311,14 @@ const PetProfilePage = () => {
                 {isAuthor && (
                   <IconButton
                     onClick={() => {
-                      setIdToDelete(item.id);
-                      setModalState((prev) => ({
-                        ...prev,
-                        deleteAllergies: true,
-                      }));
+                      confirmModal.setState({
+                        isLoading: deleteAllergyLoading,
+                        title: "Are you sure want to delete this allergy?",
+                        isOpen: true,
+                      });
+                      confirmModal.setHandleConfirm(() =>
+                        handleDeleteAllergy(item.id)
+                      );
                     }}
                     sx={{ fontSize: 12, ml: 1 }}
                   >
@@ -479,16 +482,6 @@ const PetProfilePage = () => {
             createVaccinationHistory: false,
           }))
         }
-      />
-
-      <ConfirmModal
-        isLoading={deleteAllergyLoading}
-        open={modalState.deleteAllergies}
-        handleSubmit={handleDeleteAllergy}
-        title="Are you sure want to delete this allergy?"
-        onClose={() => {
-          setModalState((prev) => ({ ...prev, deleteAllergies: false }));
-        }}
       />
 
       <UpdatePetBasicInformation

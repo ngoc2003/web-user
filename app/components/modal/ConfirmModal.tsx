@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { memo } from "react";
 import PCModal, { PCModalProps } from ".";
 import { Box, Button } from "@mui/material";
 
@@ -26,7 +26,9 @@ const ConfirmModal = ({
         </Button>
         <Button
           disabled={isLoading}
-          onClick={handleSubmit}
+          onClick={() => {
+            handleSubmit();
+          }}
           sx={{ mt: 2 }}
           fullWidth
           variant="contained"
@@ -39,4 +41,4 @@ const ConfirmModal = ({
   );
 };
 
-export default ConfirmModal;
+export default memo(ConfirmModal);
