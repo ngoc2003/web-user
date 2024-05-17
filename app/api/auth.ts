@@ -6,6 +6,15 @@ interface LoginBody {
   password: string;
 }
 
+export interface LoginGoogleBody {
+  providerAccountId: string;
+  access_token: string | undefined;
+  expires_at: number | undefined;
+  name: string;
+  email: string;
+  image: string;
+}
+
 export interface SignUpBody {
   name: string;
   sex: SEX_TYPE;
@@ -17,7 +26,7 @@ export interface SignUpBody {
 }
 
 export interface LoginResponse {
-  user: UserType & { email: string; role: string };
+  user: UserType & { email: string; role: string; image: string };
   token: string;
 }
 
@@ -32,6 +41,13 @@ export interface ResendVerifyTokenBody {
 
 export const logIn = async (body: LoginBody) => {
   return PCConnectionInstance.post<any, LoginResponse>("/auth/login", body);
+};
+
+export const logInWithGoogle = async (body: LoginGoogleBody) => {
+  return PCConnectionInstance.post<any, LoginResponse>(
+    "/auth/login/google",
+    body
+  );
 };
 
 export const logOut = async () => {

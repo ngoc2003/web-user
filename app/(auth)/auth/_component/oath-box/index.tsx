@@ -1,8 +1,14 @@
+import { PCConnectionInstance } from "@/app/api";
 import { Button, Typography } from "@mui/material";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React from "react";
+import toast from "react-hot-toast";
 
 const OathBox = () => {
+  const router = useRouter();
+
   return (
     <>
       <Button
@@ -22,6 +28,12 @@ const OathBox = () => {
         <Typography>Continue with facebook</Typography>
       </Button>
       <Button
+        onClick={() => {
+          signIn("google").then(() => {
+            router.push("/home");
+            toast.success("Login successfully. Welcome back.");
+          });
+        }}
         startIcon={
           <Image
             src="/google.png"

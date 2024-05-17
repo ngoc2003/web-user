@@ -46,7 +46,11 @@ const MenuUser = ({ user }: MenuUserProps) => {
   return (
     <Box>
       <IconButton onClick={handleClick}>
-        <Avatar alt="avatar" sx={{ bgcolor: theme.palette.primary.light }}>
+        <Avatar
+          src={user.image}
+          alt="avatar"
+          sx={{ bgcolor: theme.palette.primary.light }}
+        >
           {user.name.charAt(0)}
         </Avatar>
       </IconButton>

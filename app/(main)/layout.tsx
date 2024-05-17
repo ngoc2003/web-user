@@ -3,7 +3,6 @@ import { useGetSession } from "../hooks/useGetSession";
 import Client from "../providers/ClientProvider";
 import Topbar from "./_components/topbar";
 import { notFound } from "next/navigation";
-import { theme } from "../theme";
 import LeftSideBar from "./_components/left-sidebar";
 import ModalProvider from "./_components/modalProvider";
 
@@ -39,9 +38,8 @@ export default async function MainLayout({
           </Box>
         </Box>
 
-        <ModalProvider/>
+        <ModalProvider />
       </Box>
-
     </Client>
   );
 }

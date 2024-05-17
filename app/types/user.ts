@@ -8,12 +8,20 @@ interface CommonType {
 
 export interface CustomUserType extends UserType {
   email: string;
+  image?: string;
 }
 
 export interface AccountType extends CommonType {
   email: string;
   password: string;
   role: number;
+  provider: string;
+  type: string;
+  providerAccountId: string;
+  access_token: string;
+  token_type: string;
+  isActived: boolean;
+  expires_at: number | null;
 }
 
 // User
